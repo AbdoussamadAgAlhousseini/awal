@@ -16,6 +16,7 @@ model Area {
   code     String    @unique // ex. taq-ML
   country  String
   name     String
+  geojson  String? // polygone indicatif de l'aire, pour l'atlas (§15)
   variants Variant[]
   speakers Speaker[]
 }
@@ -46,12 +47,27 @@ model Lexeme {
   senses    Sense[]
   variants  Variant[]
   media     Media[]
+  verbStems VerbStem[]
   contributions Contribution[]
   status    String    @default("published") // draft | review | published | archived
   createdAt DateTime  @default(now())
 
   @@index([headword])
   @@index([phonetic])
+}
+
+/// Radical d'un verbe pour un aspect donné — nourrit le conjugueur (§12).
+/// `attested` distingue une forme relevée en corpus d'une forme proposée à valider.
+model VerbStem {
+  id       String  @id @default(cuid())
+  lexemeId String
+  lexeme   Lexeme  @relation(fields: [lexemeId], references: [id], onDelete: Cascade)
+  aspect   String // aoriste | accompli | inaccompli | accompli_negatif
+  stem     String
+  attested Boolean @default(false)
+  source   String?
+
+  @@unique([lexemeId, aspect])
 }
 
 /// Compte contributeur (identité pseudonyme — l'auth OAuth2/OIDC est prévue en v1.0, §25)

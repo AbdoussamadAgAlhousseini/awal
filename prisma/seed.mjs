@@ -4,6 +4,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { phoneticKey } from "../src/lib/phonetics.mjs";
+import { areaGeoJSON } from "../src/lib/geo.mjs";
 const db = new PrismaClient();
 
 const AREAS = [
@@ -119,10 +120,30 @@ const LEXEMES = [
     ],
     variants: [{ area: "ml", form: "eɣlan" }],
   },
+  {
+    headword: "əgməy", tifinagh: "ⴻⴳⵎⴻⵢ", ipa: "/əgˈməj/", pos: "verbe",
+    register: "courant", frequency: "moyenne", root: "G-M-Y",
+    senses: [
+      { defShort: "Chercher.", defLong: "Rechercher, quérir ; par extension, demander.",
+        tr: { fr: "chercher", en: "to seek, to look for", ar: "بحث عن" } },
+    ],
+    variants: [{ area: "ml", form: "əgməy" }, { area: "ne", form: "əgmăy" }],
+  },
 ];
+
+// Radicaux verbaux par aspect (§12). Radicaux NUS, sans affixes d'accord.
+// ⚠️ Formes proposées à partir de la littérature, toutes marquées non attestées :
+// elles doivent être confirmées par des locuteurs avant d'être présentées comme
+// référence. L'inaccompli de « eɣlan » est volontairement laissé non documenté
+// pour que le moteur affiche « radical non documenté » plutôt que d'inventer.
+const VERB_STEMS = {
+  "eɣlan": { aoriste: "əɣlən", accompli: "ɣlan" },
+  "əgməy": { aoriste: "əgməy", accompli: "əgmăy", inaccompli: "gămmăy" },
+};
 
 async function main() {
   console.log("→ Réinitialisation…");
+  await db.verbStem.deleteMany();
   await db.revision.deleteMany();
   await db.contribution.deleteMany();
   await db.user.deleteMany();
@@ -136,7 +157,7 @@ async function main() {
   await db.source.deleteMany();
   await db.area.deleteMany();
 
-  for (const a of AREAS) await db.area.create({ data: a });
+  for (const a of AREAS) await db.area.create({ data: { ...a, geojson: areaGeoJSON(a.id) } });
   const source = await db.source.create({ data: SOURCE });
 
   for (const lx of LEXEMES) {
@@ -179,12 +200,25 @@ async function main() {
     });
   }
 
+  // Radicaux verbaux
+  let stemCount = 0;
+  for (const [headword, stems] of Object.entries(VERB_STEMS)) {
+    const lx = await db.lexeme.findFirst({ where: { headword } });
+    if (!lx) continue;
+    for (const [aspect, stem] of Object.entries(stems)) {
+      await db.verbStem.create({
+        data: { lexemeId: lx.id, aspect, stem, attested: false, source: "À valider avec des locuteurs." },
+      });
+      stemCount++;
+    }
+  }
+
   // Comptes de démonstration (identité pseudonyme, sans mot de passe — cf. README)
   await db.user.create({ data: { pseudonym: "Fadimata", role: "moderator", reputation: 120 } });
   await db.user.create({ data: { pseudonym: "Moussa", role: "contributor", reputation: 15 } });
 
   const n = await db.lexeme.count();
-  console.log(`✓ Amorçage terminé : ${n} entrées, ${AREAS.length} aires, 2 comptes.`);
+  console.log(`✓ Amorçage terminé : ${n} entrées, ${AREAS.length} aires (géométrie incluse), ${stemCount} radicaux verbaux, 2 comptes.`);
 }
 
 main()

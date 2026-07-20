@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { getLocale } from "@/lib/locale";
 import { messages, posLabel, DEFAULT_LOCALE, type Locale } from "@/lib/i18n";
 import SiteHeader from "@/components/SiteHeader";
+import Conjugation from "@/components/Conjugation";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export default async function EntryPage({ params }: { params: Promise<{ id: stri
       root: true,
       senses: { orderBy: { order: "asc" }, include: { examples: { include: { source: true } } } },
       variants: { include: { area: true } },
+      verbStems: true,
     },
   });
 
@@ -143,7 +145,12 @@ export default async function EntryPage({ params }: { params: Promise<{ id: stri
             )}
           </div>
 
+          {lx.verbStems.length > 0 && <Conjugation stems={lx.verbStems} locale={locale} />}
+
           <div className="entry-actions">
+            <Link href={`/atlas?terme=${lx.id}`} className="btn">
+              {t.atlas.viewOnAtlas}
+            </Link>
             <Link href={`/contribuer?kind=example&lexeme=${lx.id}`} className="btn">
               + {t.contrib.kindExample}
             </Link>

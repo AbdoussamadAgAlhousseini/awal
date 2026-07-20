@@ -38,7 +38,7 @@ type Messages = {
   footerProverb: string;
   footerNote: string;
   approximateHint: string;
-  nav: { contribute: string; moderation: string; account: string };
+  nav: { atlas: string; contribute: string; moderation: string; account: string };
   acc: {
     title: string; intro: string; pseudonym: string; pseudonymPh: string;
     modCode: string; modCodeHint: string; signIn: string; signOut: string;
@@ -52,6 +52,15 @@ type Messages = {
     trFr: string; trEn: string; trAr: string; area: string; sense: string;
     exampleText: string; exampleTr: string; variantForm: string; note: string;
     submit: string; sent: string; required: string; open: string;
+  };
+  conj: {
+    title: string; aspect: string; person: string; stem: string;
+    notDocumented: string; attested: string; toValidate: string; note: string;
+  };
+  atlas: {
+    title: string; intro: string; indicative: string; entries: string;
+    variantHere: string; noVariant: string; distributionOf: string;
+    allAreas: string; present: string; absent: string; viewOnAtlas: string; parlers: string;
   };
   mod: {
     title: string; intro: string; denied: string; empty: string;
@@ -88,7 +97,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "l'eau, c'est l'âme. Une langue aussi.",
     footerNote: "Prototype de recherche · contenu lexical d'exemple à valider.",
     approximateHint: "Aucune correspondance exacte — voici des résultats phonétiquement proches.",
-    nav: { contribute: "Contribuer", moderation: "Modération", account: "Compte" },
+    nav: { atlas: "Atlas", contribute: "Contribuer", moderation: "Modération", account: "Compte" },
     acc: {
       title: "Votre compte",
       intro: "Identité pseudonyme, sans mot de passe — prototype. L'authentification complète (OAuth2/OIDC, MFA) est prévue en v1.0.",
@@ -118,6 +127,20 @@ export const messages: Record<Locale, Messages> = {
       sent: "Proposition envoyée — en attente de validation.",
       required: "Champs obligatoires manquants.",
       open: "Proposer un ajout",
+    },
+    conj: {
+      title: "Conjugaison", aspect: "Aspect", person: "Personne", stem: "radical",
+      notDocumented: "Radical non documenté pour cet aspect — aucune forme n'est générée.",
+      attested: "attesté", toValidate: "à valider",
+      note: "Le moteur fléchit les radicaux documentés ; il n'invente aucun radical manquant. Les affixes d'accord sont réguliers, les radicaux restent à confirmer par des locuteurs.",
+    },
+    atlas: {
+      title: "Atlas linguistique", intro: "Répartition indicative des aires dialectales du tamasheq.",
+      indicative: "Carte schématique. Le tamasheq est un continuum : ces zones sont indicatives, ce ne sont ni des isoglosses attestées ni des limites territoriales.",
+      entries: "entrées", variantHere: "Forme dans cette aire", noVariant: "Pas de forme documentée ici",
+      distributionOf: "Répartition de", allAreas: "Toutes les aires",
+      present: "forme documentée", absent: "non documentée", viewOnAtlas: "Voir sur l'atlas",
+      parlers: "Parlers",
     },
     mod: {
       title: "File de modération",
@@ -159,7 +182,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "water is the soul. So is a language.",
     footerNote: "Research prototype · sample lexical content, to be validated.",
     approximateHint: "No exact match — here are phonetically close results.",
-    nav: { contribute: "Contribute", moderation: "Moderation", account: "Account" },
+    nav: { atlas: "Atlas", contribute: "Contribute", moderation: "Moderation", account: "Account" },
     acc: {
       title: "Your account",
       intro: "Pseudonymous identity, no password — prototype. Full authentication (OAuth2/OIDC, MFA) is planned for v1.0.",
@@ -189,6 +212,20 @@ export const messages: Record<Locale, Messages> = {
       sent: "Suggestion sent — awaiting review.",
       required: "Required fields are missing.",
       open: "Suggest an addition",
+    },
+    conj: {
+      title: "Conjugation", aspect: "Aspect", person: "Person", stem: "stem",
+      notDocumented: "No documented stem for this aspect — no form is generated.",
+      attested: "attested", toValidate: "to validate",
+      note: "The engine inflects documented stems; it never invents a missing one. Agreement affixes are regular, but the stems still need confirmation by speakers.",
+    },
+    atlas: {
+      title: "Linguistic atlas", intro: "Indicative distribution of Tamasheq dialect areas.",
+      indicative: "Schematic map. Tamasheq is a continuum: these zones are indicative — they are neither attested isoglosses nor territorial boundaries.",
+      entries: "entries", variantHere: "Form in this area", noVariant: "No form documented here",
+      distributionOf: "Distribution of", allAreas: "All areas",
+      present: "documented form", absent: "not documented", viewOnAtlas: "View on the atlas",
+      parlers: "Varieties",
     },
     mod: {
       title: "Moderation queue",
@@ -230,7 +267,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "الماء هو الروح. واللغة كذلك.",
     footerNote: "نموذج بحثي · محتوى معجمي نموذجي، قيد التحقق.",
     approximateHint: "لا توجد مطابقة تامة — إليك نتائج قريبة صوتياً.",
-    nav: { contribute: "المساهمة", moderation: "المراجعة", account: "الحساب" },
+    nav: { atlas: "الأطلس", contribute: "المساهمة", moderation: "المراجعة", account: "الحساب" },
     acc: {
       title: "حسابك",
       intro: "هوية باسم مستعار، بدون كلمة مرور — نموذج أولي. المصادقة الكاملة (OAuth2/OIDC) مقررة في الإصدار 1.0.",
@@ -260,6 +297,20 @@ export const messages: Record<Locale, Messages> = {
       sent: "أُرسل الاقتراح — في انتظار المراجعة.",
       required: "حقول مطلوبة ناقصة.",
       open: "اقتراح إضافة",
+    },
+    conj: {
+      title: "التصريف", aspect: "الصيغة", person: "الضمير", stem: "الجذع",
+      notDocumented: "لا يوجد جذع موثّق لهذه الصيغة — لم تُولَّد أي صيغة.",
+      attested: "موثّق", toValidate: "قيد التحقق",
+      note: "يصرّف المحرك الجذوع الموثّقة فقط ولا يخترع جذعاً ناقصاً. لواحق المطابقة منتظمة، أما الجذوع فتحتاج تأكيد المتحدثين.",
+    },
+    atlas: {
+      title: "الأطلس اللغوي", intro: "التوزّع الإرشادي للمناطق اللهجية للتماشق.",
+      indicative: "خريطة تخطيطية. التماشق سلسلة متصلة: هذه المناطق إرشادية، وليست حدوداً لهجية موثّقة ولا حدوداً إقليمية.",
+      entries: "مداخل", variantHere: "الصيغة في هذه المنطقة", noVariant: "لا توجد صيغة موثّقة هنا",
+      distributionOf: "توزّع", allAreas: "كل المناطق",
+      present: "صيغة موثّقة", absent: "غير موثّقة", viewOnAtlas: "عرض على الأطلس",
+      parlers: "اللهجات",
     },
     mod: {
       title: "قائمة المراجعة",

@@ -1,6 +1,7 @@
 # Awal ⴰⵡⴰⵍ — plateforme mondiale de la langue tamasheq
 
-> **v0.5** — dictionnaire trilingue, contribution communautaire, modération et recherche phonétique.
+> **v1.0** — dictionnaire trilingue, contribution & modération, recherche phonétique,
+> conjugueur et atlas linguistique.
 > Jalons de la feuille de route du [dossier de conception](https://claude.ai/code/artifact/58fad4b0-8826-446b-8572-2f084a121724).
 
 Awal (« la parole / le mot ») vise à devenir la référence numérique mondiale de la langue
@@ -29,6 +30,7 @@ npm run dev                    # http://localhost:3000
 | `/bienvenue` | Choix de la langue au premier écran (FR / EN / AR) |
 | `/` | Recherche à trois niveaux (voir ci-dessous) |
 | `/mot/[id]` | Fiche : sens, traductions fr/en/ar, racine, étymologie, variantes |
+| `/atlas` | Atlas linguistique ; `?terme=<id>` cartographie la répartition d'un mot |
 | `/contribuer` | Proposer un mot, un exemple ou une variante dialectale |
 | `/moderation` | File de validation (réservée aux valideurs) |
 | `/compte` | Identité pseudonyme, réputation, mes contributions |
@@ -56,23 +58,53 @@ et l'arabe interrogent le même index.
 - **Un valideur ne peut pas valider sa propre proposition** — elle reste en attente
   pour un autre relecteur.
 
+### Conjugueur (§12)
+
+La conjugaison berbère se décompose en deux parties de nature très différente :
+
+- **l'affixation personnelle** est régulière et partagée par les parlers → **le moteur la génère** ;
+- **le radical de chaque aspect** dépend de la classe du verbe et est très irrégulier →
+  **le moteur ne l'invente pas**. Un aspect sans radical documenté affiche
+  « radical non documenté » au lieu d'une forme fabriquée.
+
+Chaque aspect porte son radical et un statut **attesté / à valider**. Une règle
+morphologique notable est implémentée : le préfixe de 3ᵉ pers. masc. `i-` se
+consonantise en `y-` devant voyelle (`əgməy` → `yəgməy`), sans quoi la marque
+d'accord disparaîtrait et la forme serait confondue avec le radical nu.
+
+### Atlas linguistique (§15)
+
+Carte **SVG inline**, sans fond de carte ni tuiles externes : elle fonctionne hors-ligne
+et en bas débit (§26), et n'introduit aucune dépendance à un fournisseur. Les polygones
+sont stockés en GeoJSON sur `Area.geojson`.
+
+⚠️ **Les zones sont indicatives.** Le tamasheq est un continuum : ce ne sont ni des
+isoglosses attestées ni des limites territoriales. Les isoglosses réelles devront venir
+d'enquêtes de terrain géolocalisées.
+
 ## Modèle de données
 
 Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Example`, `Root`,
-`Variant`, `Area`, `Media`, `Speaker`, `Source`, `User`, `Contribution`, `Revision` — aligné sur §21.
+`Variant`, `Area`, `Media`, `Speaker`, `Source`, `VerbStem`, `User`, `Contribution`, `Revision`
+— aligné sur §21.
 
 ## ⚠️ Limites assumées à ce stade
 
 - **Contenu lexical d'exemple**, à valider par des locuteurs et un comité scientifique.
+- **Radicaux verbaux non attestés** : les radicaux fournis sont des propositions issues de
+  la littérature, tous marqués « à valider ». Les affixes d'accord eux-mêmes sont une
+  normalisation simplifiée (2sg `-ăd`/`-ăt`, voyelle d'appui `ă`/`ə`) qui varie selon l'aire.
+- **Géométrie de l'atlas approximative**, tracée à la main à titre pédagogique.
 - **Identité pseudonyme sans mot de passe** : le code de modération est un garde simple.
-  L'authentification réelle (OAuth2/OIDC + MFA, §25) est un prérequis de la v1.0.
+  L'authentification réelle (OAuth2/OIDC + MFA, §25) **n'est pas faite** et reste un
+  prérequis bloquant avant toute mise en ligne publique.
 - **Identifiants non stables** : un `npm run setup` régénère les ID, donc les URL de fiches
   changent. Des identifiants persistants et citables sont requis avant toute diffusion (§8).
 - **Recherche en mémoire** pour les niveaux 2-3 : correct à cette échelle, à migrer vers
   OpenSearch + `pg_trgm` (§13, §26).
 - « Awal » est un **nom de travail**, à valider avec les institutions partenaires.
 
-## Suite (v1.0)
+## Suite
 
-Encyclopédie, bibliothèque IIIF, atlas linguistique, conjugueur (FST), apprentissage &
-répétition espacée, API publique v1 et exports Linked Data.
+Encyclopédie, bibliothèque IIIF, apprentissage &
+répétition espacée, audio multi-locuteurs, API publique v1 et exports Linked Data.

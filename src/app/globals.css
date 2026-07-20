@@ -238,3 +238,52 @@ a:hover{text-decoration:underline}
 /* Divers */
 .entry-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .approx{color:var(--gold);font-family:var(--mono);font-size:0.9rem}
+
+/* ============ v1.0 — conjugueur ============ */
+.conj{margin-top:28px}
+.conj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.conj-card{border:1px solid var(--line-soft);border-radius:var(--radius);padding:14px 16px;background:var(--panel)}
+.conj-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.conj-aspect{font-family:var(--serif);font-size:1.05rem;color:var(--ink)}
+.conj-stem{font-family:var(--mono);font-size:0.72rem;color:var(--ink-faint)}
+.conj-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.conj-table th{text-align:start;font-weight:400;color:var(--ink-faint);font-family:var(--mono);
+  font-size:0.7rem;padding:4px 8px 4px 0;white-space:nowrap}
+.conj-table td{padding:4px 0;color:var(--ink);font-family:var(--serif);font-size:1rem}
+.conj-missing{margin:0;color:var(--ink-soft);font-size:0.88rem;font-style:italic}
+.conj-note{margin-top:14px;font-size:0.85rem;color:var(--ink-soft);
+  border-inline-start:2px solid var(--line);padding-inline-start:12px}
+
+/* ============ v1.0 — atlas ============ */
+.atlas-section{max-width:960px}
+.atlas-fig{margin:20px 0 0;padding:0}
+.atlas-svg{width:100%;height:auto;display:block;
+  background:linear-gradient(170deg,var(--bg-2),var(--bg));
+  border:1px solid var(--line);border-radius:var(--radius)}
+.atlas-svg .grat line{stroke:var(--line-soft);stroke-width:1;stroke-dasharray:3 5}
+.atlas-svg .grat text{fill:var(--ink-faint);font-family:var(--mono);font-size:11px}
+.atlas-svg .area path{fill:color-mix(in srgb,var(--gold) 16%,transparent);
+  stroke:var(--gold);stroke-width:1.5;stroke-linejoin:round}
+.atlas-svg .area .area-label{fill:var(--ink);font-family:var(--serif);font-size:15px;text-anchor:middle}
+.atlas-svg .area .area-form{fill:var(--gold);font-family:var(--mono);font-size:13px;text-anchor:middle}
+.atlas-svg .area.has path{fill:color-mix(in srgb,var(--gold) 30%,transparent);stroke-width:2.2}
+.atlas-svg .area.hasnt path{fill:transparent;stroke:var(--line);stroke-dasharray:5 4}
+.atlas-svg .area.hasnt .area-label{fill:var(--ink-faint)}
+.atlas-svg .marks circle{fill:var(--henna)}
+.atlas-svg .marks text{fill:var(--ink-soft);font-family:var(--sans);font-size:11px}
+.atlas-caption{margin-top:10px;font-size:0.82rem;color:var(--ink-faint);font-style:italic}
+.atlas-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:0.85rem;color:var(--ink-soft)}
+.atlas-legend .sw{display:inline-block;width:14px;height:10px;border-radius:2px;margin-inline-end:6px;
+  border:1.5px solid var(--gold);background:color-mix(in srgb,var(--gold) 30%,transparent)}
+.atlas-legend .sw.hasnt{border-color:var(--line);border-style:dashed;background:transparent}
+.area-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:22px}
+.area-card{border:1px solid var(--line-soft);border-radius:12px;padding:14px;background:var(--panel)}
+.area-card header{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.area-card h4{margin:0;font-family:var(--serif);font-size:1.05rem}
+.area-code{font-family:var(--mono);font-size:0.64rem;color:var(--gold);
+  border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));border-radius:5px;padding:2px 6px}
+.area-card p{margin:6px 0 0}
+.area-stat{font-size:0.9rem;color:var(--ink-soft)}
+.area-stat b{color:var(--gold);font-family:var(--mono)}
+.area-form-line{font-size:0.9rem;color:var(--gold);font-family:var(--mono)}
+.area-form-line.none{color:var(--ink-faint);font-style:italic}
