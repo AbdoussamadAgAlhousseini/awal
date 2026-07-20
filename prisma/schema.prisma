@@ -1,0 +1,122 @@
+// Awal — modèle de données (MVP dictionnaire v0.1)
+// Aligné sur §21 du dossier de conception. SQLite en dev, portable vers PostgreSQL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+/// Aire dialectale (Mali, Niger, Algérie, Libye, Burkina Faso)
+model Area {
+  id       String    @id
+  code     String    @unique // ex. taq-ML
+  country  String
+  name     String
+  variants Variant[]
+  speakers Speaker[]
+}
+
+/// Racine consonantique (√)
+model Root {
+  id       String   @id @default(cuid())
+  radicals String   @unique // ex. M-N
+  notes    String?
+  lexemes  Lexeme[]
+}
+
+/// Entrée lexicale — objet central du dictionnaire
+model Lexeme {
+  id        String    @id @default(cuid())
+  headword  String // forme vedette (latin normalisé)
+  tifinagh  String
+  ipa       String?
+  pos       String // catégorie grammaticale
+  gender    String?
+  number    String?
+  register  String? // registre / niveau de langue
+  frequency String? // fréquence d'usage
+  etymology String?
+  rootId    String?
+  root      Root?     @relation(fields: [rootId], references: [id])
+  senses    Sense[]
+  variants  Variant[]
+  media     Media[]
+  status    String    @default("published") // draft | review | published | archived
+  createdAt DateTime  @default(now())
+
+  @@index([headword])
+}
+
+/// Acception (un mot peut avoir plusieurs sens)
+model Sense {
+  id           String    @id @default(cuid())
+  lexemeId     String
+  lexeme       Lexeme    @relation(fields: [lexemeId], references: [id], onDelete: Cascade)
+  order        Int       @default(1)
+  defShort     String
+  defLong      String?
+  translations String? // JSON: {"fr":"...","en":"...","ar":"..."}
+  examples     Example[]
+
+  @@index([lexemeId])
+}
+
+/// Exemple d'usage attesté
+model Example {
+  id          String  @id @default(cuid())
+  senseId     String
+  sense       Sense   @relation(fields: [senseId], references: [id], onDelete: Cascade)
+  text        String
+  translation String?
+  sourceId    String?
+  source      Source? @relation(fields: [sourceId], references: [id])
+}
+
+/// Forme d'un lexème dans une aire dialectale donnée
+model Variant {
+  id       String @id @default(cuid())
+  lexemeId String
+  lexeme   Lexeme @relation(fields: [lexemeId], references: [id], onDelete: Cascade)
+  areaId   String
+  area     Area   @relation(fields: [areaId], references: [id])
+  form     String
+  ipa      String?
+
+  @@unique([lexemeId, areaId])
+}
+
+/// Média rattaché à une entrée (audio, image, vidéo)
+model Media {
+  id        String   @id @default(cuid())
+  lexemeId  String
+  lexeme    Lexeme   @relation(fields: [lexemeId], references: [id], onDelete: Cascade)
+  kind      String // audio | image | video
+  uri       String
+  license   String?
+  ipa       String?
+  speakerId String?
+  speaker   Speaker? @relation(fields: [speakerId], references: [id])
+}
+
+/// Locuteur ayant fourni un enregistrement (pseudonyme + consentement)
+model Speaker {
+  id         String  @id @default(cuid())
+  pseudonym  String
+  areaId     String?
+  area       Area?   @relation(fields: [areaId], references: [id])
+  consent    Boolean @default(false)
+  media      Media[]
+}
+
+/// Source bibliographique
+model Source {
+  id       String    @id @default(cuid())
+  citation String
+  type     String?
+  url      String?
+  examples Example[]
+}
