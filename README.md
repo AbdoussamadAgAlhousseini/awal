@@ -1,7 +1,8 @@
 # Awal ⴰⵡⴰⵍ — plateforme mondiale de la langue tamasheq
 
 > **v1.0** — dictionnaire trilingue, contribution & modération, recherche phonétique,
-> conjugueur, atlas linguistique, encyclopédie et bibliothèque.
+> conjugueur, atlas linguistique, encyclopédie, bibliothèque, apprentissage
+> et prononciation multi-locuteurs.
 > Jalons de la feuille de route du [dossier de conception](https://claude.ai/code/artifact/58fad4b0-8826-446b-8572-2f084a121724).
 
 Awal (« la parole / le mot ») vise à devenir la référence numérique mondiale de la langue
@@ -33,7 +34,8 @@ npm run dev                    # http://localhost:3000
 | `/encyclopedie` | Fiches culturelles par catégorie ; `/encyclopedie/[slug]` |
 | `/bibliotheque` | Catalogue de références ; `/bibliotheque/[id]` |
 | `/atlas` | Atlas linguistique ; `?terme=<id>` cartographie la répartition d'un mot |
-| `/contribuer` | Proposer un mot, un exemple ou une variante dialectale |
+| `/apprendre` | Révision en répétition espacée (SM-2) |
+| `/contribuer` | Proposer un mot, un exemple, une variante ou un enregistrement |
 | `/moderation` | File de validation (réservée aux valideurs) |
 | `/compte` | Identité pseudonyme, réputation, mes contributions |
 | `/api/lexemes?q=…` | API JSON publique (préfigure l'API v1, §22) |
@@ -104,11 +106,38 @@ plateforme ne dispose ni de documents numérisés ni de serveur d'images : le ca
 **décrit** des références, il ne les héberge pas. Afficher un faux lecteur serait mentir
 sur ce que le système sait faire.
 
+### Apprentissage (§17)
+
+Répétition espacée sur le modèle **SM-2**. Chaque entrée ajoutée au paquet génère deux
+cartes — **reconnaissance** (tamasheq → langue) et **production** (langue → tamasheq).
+Quatre notes replanifient la carte, avec l'échéance affichée sur chaque bouton.
+
+⚠️ **Écart assumé au dossier** : celui-ci évoquait « un algorithme type FSRS ». FSRS suppose
+un modèle ajusté sur un historique de révisions réel ; sans ces données, une implémentation
+approximative serait moins fiable qu'un SM-2 correctement appliqué. Le passage à FSRS
+reste possible une fois un historique constitué.
+
+### Prononciation multi-locuteurs (§11)
+
+Plusieurs enregistrements par entrée, chacun attribué à un locuteur et à une aire, avec
+IPA, licence et contexte. Les contributeurs peuvent en proposer via `/contribuer?kind=audio`.
+
+**Garde-fou de consentement** : un enregistrement dont le locuteur n'a pas donné son
+consentement explicite n'est jamais servi. Le filtre est appliqué dans
+[`src/lib/audio.ts`](src/lib/audio.ts), **au niveau de l'accès aux données** et non dans le
+composant — de sorte qu'aucune vue future ne puisse le contourner par oubli, et que les
+enregistrements retenus n'apparaissent même pas dans la charge sérialisée envoyée au client.
+La case de consentement est obligatoire à la soumission.
+
+⚠️ **Aucun enregistrement n'est livré.** La collecte auprès de locuteurs reste à faire, et
+la plateforme **ne synthétise pas** de prononciation : présenter une voix générée comme
+référence d'une langue menacée serait nuisible.
+
 ## Modèle de données
 
 Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Example`, `Root`,
 `Variant`, `Area`, `Media`, `Speaker`, `Source`, `VerbStem`, `Article`, `Document`,
-`User`, `Contribution`, `Revision` — aligné sur §21.
+`User`, `Card`, `Contribution`, `Revision` — aligné sur §21.
 
 ## ⚠️ Limites assumées à ce stade
 
@@ -132,5 +161,5 @@ Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Exampl
 
 ## Suite
 
-Apprentissage & répétition espacée, audio multi-locuteurs, visionneuse IIIF (une fois des
-documents numérisés disponibles), API publique v1 et exports Linked Data.
+Collecte d'enregistrements auprès de locuteurs, visionneuse IIIF (une fois des documents
+numérisés disponibles), quiz et jeux, API publique v1 et exports Linked Data.

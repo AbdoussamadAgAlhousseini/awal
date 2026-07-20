@@ -12,7 +12,7 @@ export function parsePayload(json: string): Payload {
 }
 
 /** Points de réputation accordés lorsqu'une proposition est acceptée. */
-const POINTS: Record<string, number> = { new_lexeme: 5, example: 2, variant: 2 };
+const POINTS: Record<string, number> = { new_lexeme: 5, example: 2, variant: 2, audio: 4 };
 
 async function journal(entity: string, entityId: string, action: string, payload: unknown, userId?: string) {
   await db.revision.create({
@@ -96,6 +96,37 @@ export async function applyContribution(contributionId: string, reviewerId: stri
     });
     touched = lexemeId;
     await journal("variant", variant.id, "create", p, reviewerId);
+  }
+
+  if (c.kind === "audio") {
+    const lexemeId = c.lexemeId;
+    const uri = (p.uri || "").trim();
+    const pseudonym = (p.speakerPseudonym || "").trim();
+    // Sans consentement explicite, la proposition n'est pas applicable (§11, §25).
+    if (!lexemeId || !uri || !pseudonym || p.consent !== "yes") return null;
+
+    const speaker = await db.speaker.create({
+      data: {
+        pseudonym,
+        areaId: p.areaId || null,
+        consent: true,
+        consentNote: "Consentement déclaré par le contributeur lors du dépôt.",
+      },
+    });
+
+    const media = await db.media.create({
+      data: {
+        lexemeId,
+        kind: "audio",
+        uri,
+        ipa: p.ipa?.trim() || null,
+        notes: p.notes?.trim() || null,
+        license: p.license?.trim() || null,
+        speakerId: speaker.id,
+      },
+    });
+    touched = lexemeId;
+    await journal("media", media.id, "create", p, reviewerId);
   }
 
   if (touched === null) return null;

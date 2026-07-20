@@ -7,6 +7,7 @@ import { isLocale } from "@/lib/i18n";
 import { LOCALE_COOKIE } from "@/lib/locale";
 import { USER_COOKIE, getCurrentUser, isModerator } from "@/lib/session";
 import { applyContribution } from "@/lib/contributions";
+import { schedule, RATINGS } from "@/lib/srs.mjs";
 import { db } from "@/lib/db";
 
 /** Enregistre la langue choisie (cookie 1 an) puis revient à la page voulue. */
@@ -54,6 +55,68 @@ export async function signOut() {
   redirect("/compte");
 }
 
+/** Ajoute une entrée au paquet de révision, dans les deux sens d'étude (§17). */
+export async function addToDeck(formData: FormData) {
+  const user = await getCurrentUser();
+  if (!user) redirect("/compte");
+
+  const lexemeId = String(formData.get("lexemeId") || "");
+  if (!lexemeId) redirect("/apprendre");
+
+  for (const direction of ["t2l", "l2t"]) {
+    await db.card.upsert({
+      where: { userId_lexemeId_direction: { userId: user.id, lexemeId, direction } },
+      update: {},
+      create: { userId: user.id, lexemeId, direction },
+    });
+  }
+
+  revalidatePath("/apprendre");
+  redirect("/apprendre");
+}
+
+/** Enregistre une révision et replanifie la carte selon SM-2 (§17). */
+export async function reviewCard(rating: string, formData: FormData) {
+  const user = await getCurrentUser();
+  if (!user) redirect("/compte");
+
+  const cardId = String(formData.get("cardId") || "");
+  if (!cardId || !RATINGS.includes(rating)) redirect("/apprendre");
+
+  const card = await db.card.findUnique({ where: { id: cardId } });
+  if (!card || card.userId !== user.id) redirect("/apprendre");
+
+  const next = schedule(
+    { interval: card.interval, ease: card.ease, reps: card.reps, lapses: card.lapses },
+    rating as "again" | "hard" | "good" | "easy",
+  );
+
+  await db.card.update({
+    where: { id: card.id },
+    data: {
+      interval: next.interval,
+      ease: next.ease,
+      reps: next.reps,
+      lapses: next.lapses,
+      due: next.due,
+      lastReviewed: new Date(),
+    },
+  });
+
+  revalidatePath("/apprendre");
+  redirect("/apprendre");
+}
+
+/** Retire une entrée du paquet. */
+export async function removeFromDeck(formData: FormData) {
+  const user = await getCurrentUser();
+  if (!user) redirect("/compte");
+  const lexemeId = String(formData.get("lexemeId") || "");
+  if (lexemeId) await db.card.deleteMany({ where: { userId: user.id, lexemeId } });
+  revalidatePath("/apprendre");
+  redirect("/apprendre");
+}
+
 /** Dépose une proposition dans la file de modération (§18). */
 export async function submitContribution(formData: FormData) {
   const user = await getCurrentUser();
@@ -80,6 +143,17 @@ export async function submitContribution(formData: FormData) {
   } else if (kind === "variant") {
     payload = { areaId: field("areaId"), form: field("form"), ipa: field("ipa") };
     if (!payload.areaId || !payload.form) redirect(`/contribuer?e=1&lexeme=${lexemeId ?? ""}`);
+  } else if (kind === "audio") {
+    payload = {
+      uri: field("uri"), speakerPseudonym: field("speakerPseudonym"),
+      areaId: field("areaId"), license: field("license"),
+      ipa: field("ipa"), notes: field("notes"),
+      // Le consentement du locuteur est une condition de recevabilité, pas une option.
+      consent: formData.get("consent") ? "yes" : "",
+    };
+    if (!payload.uri || !payload.speakerPseudonym || !payload.consent) {
+      redirect(`/contribuer?e=1&kind=audio&lexeme=${lexemeId ?? ""}`);
+    }
   } else {
     redirect("/contribuer?e=1");
   }

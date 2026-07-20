@@ -5,6 +5,10 @@ import { getLocale } from "@/lib/locale";
 import { messages, posLabel, DEFAULT_LOCALE, type Locale } from "@/lib/i18n";
 import SiteHeader from "@/components/SiteHeader";
 import Conjugation from "@/components/Conjugation";
+import Recordings from "@/components/Recordings";
+import { listPublishableRecordings } from "@/lib/audio";
+import { addToDeck } from "@/app/actions";
+import { getCurrentUser } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +38,12 @@ export default async function EntryPage({ params }: { params: Promise<{ id: stri
   });
 
   if (!lx) notFound();
+
+  const recordings = await listPublishableRecordings(lx.id);
+  const user = await getCurrentUser();
+  const inDeck = user
+    ? (await db.card.count({ where: { userId: user.id, lexemeId: lx.id } })) > 0
+    : false;
 
   return (
     <>
@@ -145,9 +155,23 @@ export default async function EntryPage({ params }: { params: Promise<{ id: stri
             )}
           </div>
 
+          <Recordings recordings={recordings} locale={locale} />
+
           {lx.verbStems.length > 0 && <Conjugation stems={lx.verbStems} locale={locale} />}
 
           <div className="entry-actions">
+            {user &&
+              (inDeck ? (
+                <span className="btn is-on">✓ {t.learn.inDeck}</span>
+              ) : (
+                <form action={addToDeck}>
+                  <input type="hidden" name="lexemeId" value={lx.id} />
+                  <button type="submit" className="btn primary">{t.learn.addToDeck}</button>
+                </form>
+              ))}
+            <Link href={`/contribuer?kind=audio&lexeme=${lx.id}`} className="btn">
+              + {t.contrib.kindAudio}
+            </Link>
             <Link href={`/atlas?terme=${lx.id}`} className="btn">
               {t.atlas.viewOnAtlas}
             </Link>

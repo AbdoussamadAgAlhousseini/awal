@@ -38,7 +38,7 @@ type Messages = {
   footerProverb: string;
   footerNote: string;
   approximateHint: string;
-  nav: { atlas: string; enc: string; lib: string; contribute: string; moderation: string; account: string };
+  nav: { learn: string; atlas: string; enc: string; lib: string; contribute: string; moderation: string; account: string };
   acc: {
     title: string; intro: string; pseudonym: string; pseudonymPh: string;
     modCode: string; modCodeHint: string; signIn: string; signOut: string;
@@ -47,11 +47,23 @@ type Messages = {
   };
   contrib: {
     title: string; intro: string; mustSignIn: string; kind: string;
-    kindNew: string; kindExample: string; kindVariant: string; forEntry: string;
+    kindNew: string; kindExample: string; kindVariant: string; kindAudio: string; forEntry: string;
     headword: string; tifinagh: string; ipa: string; pos: string; definition: string;
     trFr: string; trEn: string; trAr: string; area: string; sense: string;
     exampleText: string; exampleTr: string; variantForm: string; note: string;
     submit: string; sent: string; required: string; open: string;
+  };
+  learn: {
+    title: string; intro: string; due: string; total: string; noCards: string;
+    addToDeck: string; inDeck: string; remove: string; reveal: string;
+    again: string; hard: string; good: string; easy: string;
+    doneTitle: string; doneBody: string; nextIn: string; minutes: string; days: string;
+    recognition: string; production: string; algo: string; signIn: string;
+  };
+  audio: {
+    title: string; none: string; speaker: string; area: string; license: string;
+    consentGate: string; addAudio: string; uri: string; speakerName: string;
+    consentLabel: string; consentHelp: string; recordingNote: string;
   };
   enc: {
     title: string; intro: string; readMore: string; relatedTerms: string;
@@ -108,7 +120,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "l'eau, c'est l'âme. Une langue aussi.",
     footerNote: "Prototype de recherche · contenu lexical d'exemple à valider.",
     approximateHint: "Aucune correspondance exacte — voici des résultats phonétiquement proches.",
-    nav: { atlas: "Atlas", enc: "Encyclopédie", lib: "Bibliothèque", contribute: "Contribuer", moderation: "Modération", account: "Compte" },
+    nav: { learn: "Apprendre", atlas: "Atlas", enc: "Encyclopédie", lib: "Bibliothèque", contribute: "Contribuer", moderation: "Modération", account: "Compte" },
     acc: {
       title: "Votre compte",
       intro: "Identité pseudonyme, sans mot de passe — prototype. L'authentification complète (OAuth2/OIDC, MFA) est prévue en v1.0.",
@@ -125,7 +137,7 @@ export const messages: Record<Locale, Messages> = {
       intro: "Toute proposition est relue par un valideur avant publication.",
       mustSignIn: "Choisissez d'abord un pseudonyme pour contribuer.",
       kind: "Type de proposition",
-      kindNew: "Nouveau mot", kindExample: "Exemple d'usage", kindVariant: "Variante dialectale",
+      kindNew: "Nouveau mot", kindExample: "Exemple d'usage", kindVariant: "Variante dialectale", kindAudio: "Enregistrement",
       forEntry: "Pour l'entrée",
       headword: "Mot (graphie latine)", tifinagh: "Tifinagh", ipa: "Prononciation (IPA)",
       pos: "Catégorie", definition: "Définition courte",
@@ -138,6 +150,18 @@ export const messages: Record<Locale, Messages> = {
       sent: "Proposition envoyée — en attente de validation.",
       required: "Champs obligatoires manquants.",
       open: "Proposer un ajout",
+    },
+    learn: {
+      title: "Apprendre", intro: "Révisions en répétition espacée.", due: "à réviser", total: "cartes", noCards: "Votre paquet est vide. Ajoutez des mots depuis leur fiche.",
+      addToDeck: "Ajouter à mes cartes", inDeck: "Dans mes cartes", remove: "Retirer du paquet", reveal: "Afficher la réponse",
+      again: "À revoir", hard: "Difficile", good: "Correct", easy: "Facile",
+      doneTitle: "Rien à réviser pour l'instant", doneBody: "Revenez plus tard : les cartes réapparaîtront à leur échéance.", nextIn: "prochaine révision dans", minutes: "min", days: "j",
+      recognition: "Reconnaissance", production: "Production", algo: "Ordonnancement SM-2. Le dossier évoquait FSRS, qui suppose un modèle ajusté sur un historique de révisions ; SM-2 est retenu tant que cet historique n'existe pas.", signIn: "Connectez-vous pour réviser.",
+    },
+    audio: {
+      title: "Prononciation", none: "Aucun enregistrement pour cette entrée. La collecte auprès de locuteurs reste à faire — la plateforme ne synthétise pas de prononciation.", speaker: "Locuteur", area: "Aire", license: "Licence",
+      consentGate: "Seuls les enregistrements dont le locuteur a donné son consentement explicite sont diffusés.", addAudio: "Proposer un enregistrement", uri: "Adresse du fichier audio", speakerName: "Locuteur (pseudonyme)",
+      consentLabel: "Le locuteur consent à la diffusion de cet enregistrement", consentHelp: "Obligatoire. Sans consentement explicite, la proposition est irrecevable.", recordingNote: "Contexte d'enregistrement (facultatif)",
     },
     enc: {
       title: "Encyclopédie", intro: "Fiches culturelles reliées au lexique.", readMore: "Lire la fiche",
@@ -209,7 +233,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "water is the soul. So is a language.",
     footerNote: "Research prototype · sample lexical content, to be validated.",
     approximateHint: "No exact match — here are phonetically close results.",
-    nav: { atlas: "Atlas", enc: "Encyclopedia", lib: "Library", contribute: "Contribute", moderation: "Moderation", account: "Account" },
+    nav: { learn: "Learn", atlas: "Atlas", enc: "Encyclopedia", lib: "Library", contribute: "Contribute", moderation: "Moderation", account: "Account" },
     acc: {
       title: "Your account",
       intro: "Pseudonymous identity, no password — prototype. Full authentication (OAuth2/OIDC, MFA) is planned for v1.0.",
@@ -226,7 +250,7 @@ export const messages: Record<Locale, Messages> = {
       intro: "Every suggestion is reviewed before it is published.",
       mustSignIn: "Pick a pseudonym first to contribute.",
       kind: "Type of suggestion",
-      kindNew: "New word", kindExample: "Usage example", kindVariant: "Dialectal variant",
+      kindNew: "New word", kindExample: "Usage example", kindVariant: "Dialectal variant", kindAudio: "Recording",
       forEntry: "For the entry",
       headword: "Word (Latin script)", tifinagh: "Tifinagh", ipa: "Pronunciation (IPA)",
       pos: "Part of speech", definition: "Short definition",
@@ -239,6 +263,18 @@ export const messages: Record<Locale, Messages> = {
       sent: "Suggestion sent — awaiting review.",
       required: "Required fields are missing.",
       open: "Suggest an addition",
+    },
+    learn: {
+      title: "Learn", intro: "Spaced-repetition review.", due: "due", total: "cards", noCards: "Your deck is empty. Add words from their entry page.",
+      addToDeck: "Add to my cards", inDeck: "In my cards", remove: "Remove from deck", reveal: "Show answer",
+      again: "Again", hard: "Hard", good: "Good", easy: "Easy",
+      doneTitle: "Nothing due right now", doneBody: "Come back later: cards reappear when they are due.", nextIn: "next review in", minutes: "min", days: "d",
+      recognition: "Recognition", production: "Production", algo: "SM-2 scheduling. The design dossier mentioned FSRS, which requires a model fitted on real review history; SM-2 is used until that history exists.", signIn: "Sign in to review.",
+    },
+    audio: {
+      title: "Pronunciation", none: "No recording for this entry. Collection from speakers is still to be done — the platform does not synthesise pronunciation.", speaker: "Speaker", area: "Area", license: "Licence",
+      consentGate: "Only recordings whose speaker gave explicit consent are served.", addAudio: "Suggest a recording", uri: "Audio file URL", speakerName: "Speaker (pseudonym)",
+      consentLabel: "The speaker consents to this recording being published", consentHelp: "Required. Without explicit consent the suggestion is not admissible.", recordingNote: "Recording context (optional)",
     },
     enc: {
       title: "Encyclopedia", intro: "Cultural entries linked to the lexicon.", readMore: "Read the entry",
@@ -310,7 +346,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "الماء هو الروح. واللغة كذلك.",
     footerNote: "نموذج بحثي · محتوى معجمي نموذجي، قيد التحقق.",
     approximateHint: "لا توجد مطابقة تامة — إليك نتائج قريبة صوتياً.",
-    nav: { atlas: "الأطلس", enc: "الموسوعة", lib: "المكتبة", contribute: "المساهمة", moderation: "المراجعة", account: "الحساب" },
+    nav: { learn: "التعلّم", atlas: "الأطلس", enc: "الموسوعة", lib: "المكتبة", contribute: "المساهمة", moderation: "المراجعة", account: "الحساب" },
     acc: {
       title: "حسابك",
       intro: "هوية باسم مستعار، بدون كلمة مرور — نموذج أولي. المصادقة الكاملة (OAuth2/OIDC) مقررة في الإصدار 1.0.",
@@ -327,7 +363,7 @@ export const messages: Record<Locale, Messages> = {
       intro: "تُراجَع كل الاقتراحات قبل نشرها.",
       mustSignIn: "اختر اسماً مستعاراً أولاً للمساهمة.",
       kind: "نوع الاقتراح",
-      kindNew: "كلمة جديدة", kindExample: "مثال استعمال", kindVariant: "تنويعة لهجية",
+      kindNew: "كلمة جديدة", kindExample: "مثال استعمال", kindVariant: "تنويعة لهجية", kindAudio: "تسجيل",
       forEntry: "للمدخل",
       headword: "الكلمة (بالحرف اللاتيني)", tifinagh: "تيفيناغ", ipa: "النطق (IPA)",
       pos: "القسم النحوي", definition: "تعريف مختصر",
@@ -340,6 +376,18 @@ export const messages: Record<Locale, Messages> = {
       sent: "أُرسل الاقتراح — في انتظار المراجعة.",
       required: "حقول مطلوبة ناقصة.",
       open: "اقتراح إضافة",
+    },
+    learn: {
+      title: "التعلّم", intro: "مراجعة بالتكرار المتباعد.", due: "للمراجعة", total: "بطاقات", noCards: "مجموعتك فارغة. أضف كلمات من صفحاتها.",
+      addToDeck: "إضافة إلى بطاقاتي", inDeck: "في بطاقاتي", remove: "إزالة من المجموعة", reveal: "إظهار الجواب",
+      again: "إعادة", hard: "صعب", good: "جيد", easy: "سهل",
+      doneTitle: "لا شيء للمراجعة الآن", doneBody: "عد لاحقاً: تظهر البطاقات عند حلول موعدها.", nextIn: "المراجعة القادمة بعد", minutes: "د", days: "ي",
+      recognition: "التعرّف", production: "الإنتاج", algo: "الجدولة بخوارزمية SM-2. ذكر الملف FSRS التي تتطلب نموذجاً مضبوطاً على سجل مراجعات حقيقي؛ تُعتمد SM-2 إلى أن يتوفر هذا السجل.", signIn: "سجّل الدخول للمراجعة.",
+    },
+    audio: {
+      title: "النطق", none: "لا يوجد تسجيل لهذا المدخل. جمع التسجيلات من المتحدثين لم يتم بعد — والمنصة لا تصطنع النطق.", speaker: "المتحدث", area: "المنطقة", license: "الرخصة",
+      consentGate: "لا تُنشر إلا التسجيلات التي وافق متحدثوها صراحةً.", addAudio: "اقتراح تسجيل", uri: "رابط الملف الصوتي", speakerName: "المتحدث (اسم مستعار)",
+      consentLabel: "يوافق المتحدث على نشر هذا التسجيل", consentHelp: "إلزامي. بدون موافقة صريحة يُرفض الاقتراح.", recordingNote: "سياق التسجيل (اختياري)",
     },
     enc: {
       title: "الموسوعة", intro: "بطاقات ثقافية مرتبطة بالمعجم.", readMore: "قراءة البطاقة",

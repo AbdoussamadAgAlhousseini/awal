@@ -50,6 +50,7 @@ model Lexeme {
   media     Media[]
   verbStems VerbStem[]
   articles  ArticleLexeme[]
+  cards     Card[]
   contributions Contribution[]
   status    String    @default("published") // draft | review | published | archived
   createdAt DateTime  @default(now())
@@ -81,6 +82,7 @@ model User {
   createdAt     DateTime       @default(now())
   contributions Contribution[] @relation("author")
   reviews       Contribution[] @relation("reviewer")
+  cards         Card[]
 }
 
 /// Proposition soumise par un contributeur, en attente de validation (§18)
@@ -101,6 +103,27 @@ model Contribution {
   reviewedAt DateTime?
 
   @@index([status])
+}
+
+/// Carte de révision en répétition espacée (§17). Un couple (lexème, sens d'étude)
+/// par apprenant. L'ordonnancement suit SM-2 (cf. src/lib/srs.mjs).
+model Card {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lexemeId     String
+  lexeme       Lexeme   @relation(fields: [lexemeId], references: [id], onDelete: Cascade)
+  direction    String // t2l (reconnaissance) | l2t (production)
+  due          DateTime @default(now())
+  interval     Int      @default(0) // en jours
+  ease         Float    @default(2.5)
+  reps         Int      @default(0)
+  lapses       Int      @default(0)
+  lastReviewed DateTime?
+  createdAt    DateTime @default(now())
+
+  @@unique([userId, lexemeId, direction])
+  @@index([userId, due])
 }
 
 /// Journal d'audit : toute écriture métier est historisée et réversible (§21, §25)
@@ -163,6 +186,8 @@ model Media {
   uri       String
   license   String?
   ipa       String?
+  notes     String? // contexte d'enregistrement
+  createdAt DateTime @default(now())
   speakerId String?
   speaker   Speaker? @relation(fields: [speakerId], references: [id])
 }
@@ -173,8 +198,11 @@ model Speaker {
   pseudonym  String
   areaId     String?
   area       Area?   @relation(fields: [areaId], references: [id])
-  consent    Boolean @default(false)
-  media      Media[]
+  /// Consentement explicite à la diffusion (§11, §25). Sans consentement,
+  /// l'enregistrement n'est jamais servi à l'interface publique.
+  consent     Boolean @default(false)
+  consentNote String?
+  media       Media[]
 }
 
 /// Source bibliographique

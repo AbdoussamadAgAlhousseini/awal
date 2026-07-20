@@ -9,7 +9,7 @@ import SiteHeader from "@/components/SiteHeader";
 export const dynamic = "force-dynamic";
 
 type SP = { kind?: string; lexeme?: string; e?: string };
-const KINDS = ["new_lexeme", "example", "variant"] as const;
+const KINDS = ["new_lexeme", "example", "variant", "audio"] as const;
 
 export default async function Contribute({ searchParams }: { searchParams: Promise<SP> }) {
   const locale: Locale = (await getLocale()) ?? DEFAULT_LOCALE;
@@ -27,7 +27,7 @@ export default async function Contribute({ searchParams }: { searchParams: Promi
     : null;
 
   const qs = (k: string) => `/contribuer?kind=${k}${lexeme ? `&lexeme=${lexeme.id}` : ""}`;
-  const needsEntry = (kind === "example" || kind === "variant") && !lexeme;
+  const needsEntry = ["example", "variant", "audio"].includes(kind) && !lexeme;
 
   return (
     <>
@@ -48,7 +48,13 @@ export default async function Contribute({ searchParams }: { searchParams: Promi
               <div className="tabs" role="tablist">
                 {KINDS.map((k) => (
                   <Link key={k} href={qs(k)} className={`tab ${kind === k ? "on" : ""}`}>
-                    {k === "new_lexeme" ? t.contrib.kindNew : k === "example" ? t.contrib.kindExample : t.contrib.kindVariant}
+                    {k === "new_lexeme"
+                      ? t.contrib.kindNew
+                      : k === "example"
+                        ? t.contrib.kindExample
+                        : k === "variant"
+                          ? t.contrib.kindVariant
+                          : t.contrib.kindAudio}
                   </Link>
                 ))}
               </div>
@@ -166,6 +172,49 @@ export default async function Contribute({ searchParams }: { searchParams: Promi
                         <input name="ipa" maxLength={80} dir="ltr" />
                       </label>
                     </div>
+                  )}
+
+                  {kind === "audio" && lexeme && (
+                    <>
+                      <label className="field-row">
+                        <span>{t.audio.uri} *</span>
+                        <input name="uri" required type="url" dir="ltr" placeholder="https://…" />
+                      </label>
+                      <div className="grid2">
+                        <label className="field-row">
+                          <span>{t.audio.speakerName} *</span>
+                          <input name="speakerPseudonym" required maxLength={60} dir="auto" />
+                        </label>
+                        <label className="field-row">
+                          <span>{t.contrib.area}</span>
+                          <select name="areaId" defaultValue="">
+                            <option value="">—</option>
+                            {areas.map((a) => (
+                              <option key={a.id} value={a.id}>{a.country} ({a.code})</option>
+                            ))}
+                          </select>
+                        </label>
+                        <label className="field-row">
+                          <span>{t.contrib.ipa}</span>
+                          <input name="ipa" maxLength={80} dir="ltr" />
+                        </label>
+                        <label className="field-row">
+                          <span>{t.audio.license}</span>
+                          <input name="license" maxLength={60} dir="auto" placeholder="CC BY-SA 4.0" />
+                        </label>
+                      </div>
+                      <label className="field-row">
+                        <span>{t.audio.recordingNote}</span>
+                        <input name="notes" maxLength={200} dir="auto" />
+                      </label>
+                      <label className="consent-row">
+                        <input type="checkbox" name="consent" required />
+                        <span>
+                          {t.audio.consentLabel} *
+                          <small className="muted">{t.audio.consentHelp}</small>
+                        </span>
+                      </label>
+                    </>
                   )}
 
                   <label className="field-row">
