@@ -19,6 +19,7 @@ model Area {
   geojson  String? // polygone indicatif de l'aire, pour l'atlas (§15)
   variants Variant[]
   speakers Speaker[]
+  articles Article[]
 }
 
 /// Racine consonantique (√)
@@ -48,6 +49,7 @@ model Lexeme {
   variants  Variant[]
   media     Media[]
   verbStems VerbStem[]
+  articles  ArticleLexeme[]
   contributions Contribution[]
   status    String    @default("published") // draft | review | published | archived
   createdAt DateTime  @default(now())
@@ -177,9 +179,79 @@ model Speaker {
 
 /// Source bibliographique
 model Source {
-  id       String    @id @default(cuid())
-  citation String
-  type     String?
-  url      String?
-  examples Example[]
+  id         String    @id @default(cuid())
+  citation   String
+  type       String?
+  url        String?
+  documentId String?
+  document   Document? @relation(fields: [documentId], references: [id])
+  examples   Example[]
+}
+
+/// Fiche encyclopédique culturelle (§9)
+model Article {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  summary   String
+  body      String
+  category  String // histoire | oralite | musique | artisanat | pastoralisme | habitat | cosmologie | coutume | nature
+  areaId    String?
+  area      Area?    @relation(fields: [areaId], references: [id])
+  /// Régime d'accès CARE (§9) : « public » ou « restricted » lorsque le savoir est
+  /// sensible (généalogies, droit coutumier, médecine) et requiert le consentement
+  /// des détenteurs avant diffusion.
+  sensitivity String @default("public")
+  restrictionNote String?
+  status    String   @default("published") // draft | review | published | archived
+  createdAt DateTime @default(now())
+
+  lexemes   ArticleLexeme[]
+  documents ArticleDocument[]
+
+  @@index([category])
+}
+
+/// Termes du lexique traités dans une fiche encyclopédique
+model ArticleLexeme {
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  lexemeId  String
+  lexeme    Lexeme  @relation(fields: [lexemeId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, lexemeId])
+}
+
+/// Document de la bibliothèque numérique (§16)
+model Document {
+  id          String  @id @default(cuid())
+  title       String
+  author      String?
+  year        String?
+  kind        String // livre | article | manuscrit | audio | video | archive
+  language    String?
+  description String?
+  /// Régime de droits : « open » (librement consultable), « restricted » (consultation
+  /// encadrée), « unknown » (à clarifier avant toute diffusion).
+  rights      String  @default("unknown")
+  rightsNote  String?
+  url         String?
+  /// Manifeste IIIF — le champ existe, mais aucune visionneuse n'est branchée
+  /// tant qu'il n'y a pas de documents numérisés ni de serveur d'images.
+  iiifManifest String?
+  createdAt   DateTime @default(now())
+
+  sources   Source[]
+  articles  ArticleDocument[]
+
+  @@index([kind])
+}
+
+model ArticleDocument {
+  articleId  String
+  article    Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, documentId])
 }

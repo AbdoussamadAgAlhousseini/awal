@@ -1,7 +1,7 @@
 # Awal ⴰⵡⴰⵍ — plateforme mondiale de la langue tamasheq
 
 > **v1.0** — dictionnaire trilingue, contribution & modération, recherche phonétique,
-> conjugueur et atlas linguistique.
+> conjugueur, atlas linguistique, encyclopédie et bibliothèque.
 > Jalons de la feuille de route du [dossier de conception](https://claude.ai/code/artifact/58fad4b0-8826-446b-8572-2f084a121724).
 
 Awal (« la parole / le mot ») vise à devenir la référence numérique mondiale de la langue
@@ -30,6 +30,8 @@ npm run dev                    # http://localhost:3000
 | `/bienvenue` | Choix de la langue au premier écran (FR / EN / AR) |
 | `/` | Recherche à trois niveaux (voir ci-dessous) |
 | `/mot/[id]` | Fiche : sens, traductions fr/en/ar, racine, étymologie, variantes |
+| `/encyclopedie` | Fiches culturelles par catégorie ; `/encyclopedie/[slug]` |
+| `/bibliotheque` | Catalogue de références ; `/bibliotheque/[id]` |
 | `/atlas` | Atlas linguistique ; `?terme=<id>` cartographie la répartition d'un mot |
 | `/contribuer` | Proposer un mot, un exemple ou une variante dialectale |
 | `/moderation` | File de validation (réservée aux valideurs) |
@@ -82,11 +84,31 @@ sont stockés en GeoJSON sur `Area.geojson`.
 isoglosses attestées ni des limites territoriales. Les isoglosses réelles devront venir
 d'enquêtes de terrain géolocalisées.
 
+### Encyclopédie (§9)
+
+Fiches culturelles classées par catégorie, reliées au lexique et à la bibliothèque.
+
+Le garde-fou éthique du dossier est **implémenté, pas seulement documenté** : chaque fiche
+porte un régime d'accès. Une fiche `restricted` (droit coutumier, généalogies, médecine)
+**n'expose aucun corps de texte** — seulement un avis motivé. Conformément aux principes
+CARE, ces savoirs ne se publient pas sans le consentement de leurs détenteurs.
+
+### Bibliothèque (§16)
+
+Catalogue de références avec métadonnées, régime de droits (`open` / `restricted` /
+`unknown`) et liens croisés vers les fiches encyclopédiques. Un document sous droits
+n'affiche aucun lien de consultation.
+
+⚠️ **Aucune visionneuse IIIF n'est branchée.** Le champ `iiifManifest` existe, mais la
+plateforme ne dispose ni de documents numérisés ni de serveur d'images : le catalogue
+**décrit** des références, il ne les héberge pas. Afficher un faux lecteur serait mentir
+sur ce que le système sait faire.
+
 ## Modèle de données
 
 Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Example`, `Root`,
-`Variant`, `Area`, `Media`, `Speaker`, `Source`, `VerbStem`, `User`, `Contribution`, `Revision`
-— aligné sur §21.
+`Variant`, `Area`, `Media`, `Speaker`, `Source`, `VerbStem`, `Article`, `Document`,
+`User`, `Contribution`, `Revision` — aligné sur §21.
 
 ## ⚠️ Limites assumées à ce stade
 
@@ -95,6 +117,10 @@ Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Exampl
   la littérature, tous marqués « à valider ». Les affixes d'accord eux-mêmes sont une
   normalisation simplifiée (2sg `-ăd`/`-ăt`, voyelle d'appui `ă`/`ə`) qui varie selon l'aire.
 - **Géométrie de l'atlas approximative**, tracée à la main à titre pédagogique.
+- **Fiches encyclopédiques de démonstration** : rédigées à un niveau général et factuel,
+  elles n'ont pas été relues par un comité scientifique.
+- **Métadonnées bibliographiques à vérifier** : les notices renvoient à des ouvrages réels
+  mais leurs détails (édition, pagination) doivent être confirmés sur les exemplaires.
 - **Identité pseudonyme sans mot de passe** : le code de modération est un garde simple.
   L'authentification réelle (OAuth2/OIDC + MFA, §25) **n'est pas faite** et reste un
   prérequis bloquant avant toute mise en ligne publique.
@@ -106,5 +132,5 @@ Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Exampl
 
 ## Suite
 
-Encyclopédie, bibliothèque IIIF, apprentissage &
-répétition espacée, audio multi-locuteurs, API publique v1 et exports Linked Data.
+Apprentissage & répétition espacée, audio multi-locuteurs, visionneuse IIIF (une fois des
+documents numérisés disponibles), API publique v1 et exports Linked Data.

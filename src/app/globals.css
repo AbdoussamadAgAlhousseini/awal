@@ -287,3 +287,44 @@ a:hover{text-decoration:underline}
 .area-stat b{color:var(--gold);font-family:var(--mono)}
 .area-form-line{font-size:0.9rem;color:var(--gold);font-family:var(--mono)}
 .area-form-line.none{color:var(--ink-faint);font-style:italic}
+
+/* ============ v1.0 — encyclopédie & bibliothèque ============ */
+.tabn{font-family:var(--mono);font-size:0.7em;opacity:0.65;margin-inline-start:4px}
+
+.art-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:20px}
+.art-card{border:1px solid var(--line-soft);border-radius:var(--radius);padding:16px 18px;
+  background:var(--panel);display:flex;flex-direction:column;gap:8px}
+.art-card header{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.art-card h3{margin:0;font-family:var(--serif);font-size:1.2rem;line-height:1.25}
+.art-card h3 a{color:var(--ink)}
+.art-card h3 a:hover{color:var(--gold);text-decoration:none}
+.art-cat{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));
+  border-radius:5px;padding:2px 7px}
+.art-sum{margin:0;font-size:0.92rem;color:var(--ink-soft)}
+.art-more{font-family:var(--mono);font-size:0.78rem;margin-top:auto}
+
+.article{max-width:74ch}
+.art-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 8px}
+.art-lead{font-size:1.1rem;color:var(--ink-soft);margin:0 0 6px}
+.art-body{margin-top:18px}
+.art-body p{margin:0 0 1.1em;line-height:1.75}
+.art-rel{margin-top:28px}
+
+.restricted{border:1px solid color-mix(in srgb,var(--henna) 45%,var(--line));
+  border-inline-start:3px solid var(--henna);border-radius:var(--radius);
+  padding:18px 20px;margin-top:20px;background:color-mix(in srgb,var(--henna) 7%,transparent)}
+.restricted h3{margin:0 0 8px;font-family:var(--serif);font-size:1.1rem;color:var(--henna)}
+.restricted p{margin:0 0 8px;color:var(--ink-soft);font-size:0.95rem}
+.restricted-note{border-inline-start:2px solid var(--line);padding-inline-start:12px;
+  font-style:italic;font-size:0.9rem}
+
+.doc-list{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.doc-card{border:1px solid var(--line-soft);border-radius:var(--radius);padding:16px 18px;background:var(--panel)}
+.doc-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.doc-card h3{margin:0 0 4px;font-family:var(--serif);font-size:1.15rem;line-height:1.3}
+.doc-card h3 a{color:var(--ink)}
+.doc-card h3 a:hover{color:var(--gold);text-decoration:none}
+.doc-by{margin:0 0 6px}
+.doc-desc{margin:0;font-size:0.92rem;color:var(--ink-soft)}
+.doc-meta{margin:18px 0}

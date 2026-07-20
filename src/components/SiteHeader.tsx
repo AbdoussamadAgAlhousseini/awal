@@ -17,6 +17,8 @@ export default async function SiteHeader({ locale, next }: { locale: Locale; nex
         </Link>
 
         <nav className="mainnav">
+          <Link href="/encyclopedie">{t.nav.enc}</Link>
+          <Link href="/bibliotheque">{t.nav.lib}</Link>
           <Link href="/atlas">{t.nav.atlas}</Link>
           <Link href="/contribuer">{t.nav.contribute}</Link>
           {isModerator(user) && <Link href="/moderation">{t.nav.moderation}</Link>}

@@ -38,7 +38,7 @@ type Messages = {
   footerProverb: string;
   footerNote: string;
   approximateHint: string;
-  nav: { atlas: string; contribute: string; moderation: string; account: string };
+  nav: { atlas: string; enc: string; lib: string; contribute: string; moderation: string; account: string };
   acc: {
     title: string; intro: string; pseudonym: string; pseudonymPh: string;
     modCode: string; modCodeHint: string; signIn: string; signOut: string;
@@ -52,6 +52,17 @@ type Messages = {
     trFr: string; trEn: string; trAr: string; area: string; sense: string;
     exampleText: string; exampleTr: string; variantForm: string; note: string;
     submit: string; sent: string; required: string; open: string;
+  };
+  enc: {
+    title: string; intro: string; readMore: string; relatedTerms: string;
+    furtherReading: string; restricted: string; restrictedTitle: string;
+    categories: Record<string, string>; empty: string; area: string;
+  };
+  lib: {
+    title: string; intro: string; author: string; year: string; language: string;
+    kind: string; rights: string; open: string; restricted: string; unknown: string;
+    consult: string; noViewer: string; kinds: Record<string, string>;
+    inArticles: string; all: string; empty: string;
   };
   conj: {
     title: string; aspect: string; person: string; stem: string;
@@ -97,7 +108,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "l'eau, c'est l'âme. Une langue aussi.",
     footerNote: "Prototype de recherche · contenu lexical d'exemple à valider.",
     approximateHint: "Aucune correspondance exacte — voici des résultats phonétiquement proches.",
-    nav: { atlas: "Atlas", contribute: "Contribuer", moderation: "Modération", account: "Compte" },
+    nav: { atlas: "Atlas", enc: "Encyclopédie", lib: "Bibliothèque", contribute: "Contribuer", moderation: "Modération", account: "Compte" },
     acc: {
       title: "Votre compte",
       intro: "Identité pseudonyme, sans mot de passe — prototype. L'authentification complète (OAuth2/OIDC, MFA) est prévue en v1.0.",
@@ -127,6 +138,22 @@ export const messages: Record<Locale, Messages> = {
       sent: "Proposition envoyée — en attente de validation.",
       required: "Champs obligatoires manquants.",
       open: "Proposer un ajout",
+    },
+    enc: {
+      title: "Encyclopédie", intro: "Fiches culturelles reliées au lexique.", readMore: "Lire la fiche",
+      relatedTerms: "Termes liés", furtherReading: "À consulter",
+      restrictedTitle: "Fiche à accès restreint", restricted: "Ce savoir est sensible et n'est pas diffusé sans le consentement de ses détenteurs.",
+      empty: "Aucune fiche dans cette catégorie.", area: "Aire",
+      categories: { histoire: "Histoire", oralite: "Traditions orales", musique: "Musique & poésie", artisanat: "Artisanat",
+        pastoralisme: "Pastoralisme", habitat: "Habitat & vêtements", cosmologie: "Cosmologie", coutume: "Droit coutumier", nature: "Faune & flore" },
+    },
+    lib: {
+      title: "Bibliothèque", intro: "Catalogue de références : livres, archives, enregistrements.", author: "Auteur", year: "Année",
+      language: "Langue", kind: "Type", rights: "Droits",
+      open: "libre", restricted: "consultation encadrée", unknown: "à clarifier",
+      consult: "Consulter la source", noViewer: "Aucune visionneuse IIIF n'est branchée : la plateforme ne dispose ni de documents numérisés ni de serveur d'images. Le catalogue décrit les références, il ne les héberge pas.", inArticles: "Cité dans",
+      all: "Tous", empty: "Aucun document de ce type.",
+      kinds: { livre: "Livre", article: "Article", manuscrit: "Manuscrit", audio: "Audio", video: "Vidéo", archive: "Archive" },
     },
     conj: {
       title: "Conjugaison", aspect: "Aspect", person: "Personne", stem: "radical",
@@ -182,7 +209,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "water is the soul. So is a language.",
     footerNote: "Research prototype · sample lexical content, to be validated.",
     approximateHint: "No exact match — here are phonetically close results.",
-    nav: { atlas: "Atlas", contribute: "Contribute", moderation: "Moderation", account: "Account" },
+    nav: { atlas: "Atlas", enc: "Encyclopedia", lib: "Library", contribute: "Contribute", moderation: "Moderation", account: "Account" },
     acc: {
       title: "Your account",
       intro: "Pseudonymous identity, no password — prototype. Full authentication (OAuth2/OIDC, MFA) is planned for v1.0.",
@@ -212,6 +239,22 @@ export const messages: Record<Locale, Messages> = {
       sent: "Suggestion sent — awaiting review.",
       required: "Required fields are missing.",
       open: "Suggest an addition",
+    },
+    enc: {
+      title: "Encyclopedia", intro: "Cultural entries linked to the lexicon.", readMore: "Read the entry",
+      relatedTerms: "Related terms", furtherReading: "Further reading",
+      restrictedTitle: "Restricted entry", restricted: "This knowledge is sensitive and is not published without the consent of its holders.",
+      empty: "No entry in this category.", area: "Area",
+      categories: { histoire: "History", oralite: "Oral traditions", musique: "Music & poetry", artisanat: "Craft",
+        pastoralisme: "Pastoralism", habitat: "Dwelling & dress", cosmologie: "Cosmology", coutume: "Customary law", nature: "Fauna & flora" },
+    },
+    lib: {
+      title: "Library", intro: "Reference catalogue: books, archives, recordings.", author: "Author", year: "Year",
+      language: "Language", kind: "Type", rights: "Rights",
+      open: "open", restricted: "supervised access", unknown: "to clarify",
+      consult: "View the source", noViewer: "No IIIF viewer is wired up: the platform has neither digitised documents nor an image server. The catalogue describes references, it does not host them.", inArticles: "Cited in",
+      all: "All", empty: "No document of this type.",
+      kinds: { livre: "Book", article: "Article", manuscrit: "Manuscript", audio: "Audio", video: "Video", archive: "Archive" },
     },
     conj: {
       title: "Conjugation", aspect: "Aspect", person: "Person", stem: "stem",
@@ -267,7 +310,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "الماء هو الروح. واللغة كذلك.",
     footerNote: "نموذج بحثي · محتوى معجمي نموذجي، قيد التحقق.",
     approximateHint: "لا توجد مطابقة تامة — إليك نتائج قريبة صوتياً.",
-    nav: { atlas: "الأطلس", contribute: "المساهمة", moderation: "المراجعة", account: "الحساب" },
+    nav: { atlas: "الأطلس", enc: "الموسوعة", lib: "المكتبة", contribute: "المساهمة", moderation: "المراجعة", account: "الحساب" },
     acc: {
       title: "حسابك",
       intro: "هوية باسم مستعار، بدون كلمة مرور — نموذج أولي. المصادقة الكاملة (OAuth2/OIDC) مقررة في الإصدار 1.0.",
@@ -297,6 +340,22 @@ export const messages: Record<Locale, Messages> = {
       sent: "أُرسل الاقتراح — في انتظار المراجعة.",
       required: "حقول مطلوبة ناقصة.",
       open: "اقتراح إضافة",
+    },
+    enc: {
+      title: "الموسوعة", intro: "بطاقات ثقافية مرتبطة بالمعجم.", readMore: "قراءة البطاقة",
+      relatedTerms: "مصطلحات ذات صلة", furtherReading: "للاطّلاع",
+      restrictedTitle: "بطاقة ذات وصول مقيّد", restricted: "هذه المعرفة حسّاسة ولا تُنشر دون موافقة أصحابها.",
+      empty: "لا توجد بطاقات في هذا التصنيف.", area: "المنطقة",
+      categories: { histoire: "التاريخ", oralite: "التقاليد الشفوية", musique: "الموسيقى والشعر", artisanat: "الحِرَف",
+        pastoralisme: "الرعي", habitat: "السكن واللباس", cosmologie: "علم الكون", coutume: "القانون العرفي", nature: "الحيوان والنبات" },
+    },
+    lib: {
+      title: "المكتبة", intro: "فهرس المراجع: كتب وأرشيفات وتسجيلات.", author: "المؤلف", year: "السنة",
+      language: "اللغة", kind: "النوع", rights: "الحقوق",
+      open: "حر", restricted: "اطّلاع مؤطَّر", unknown: "قيد التوضيح",
+      consult: "الاطلاع على المصدر", noViewer: "لا يوجد عارض IIIF: المنصة لا تملك وثائق مرقمنة ولا خادم صور. الفهرس يصف المراجع ولا يستضيفها.", inArticles: "مذكور في",
+      all: "الكل", empty: "لا توجد وثائق من هذا النوع.",
+      kinds: { livre: "كتاب", article: "مقال", manuscrit: "مخطوط", audio: "صوت", video: "فيديو", archive: "أرشيف" },
     },
     conj: {
       title: "التصريف", aspect: "الصيغة", person: "الضمير", stem: "الجذع",

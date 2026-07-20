@@ -5,6 +5,7 @@
 import { PrismaClient } from "@prisma/client";
 import { phoneticKey } from "../src/lib/phonetics.mjs";
 import { areaGeoJSON } from "../src/lib/geo.mjs";
+import { ARTICLES, DOCUMENTS } from "./seed-corpus.mjs";
 const db = new PrismaClient();
 
 const AREAS = [
@@ -143,6 +144,9 @@ const VERB_STEMS = {
 
 async function main() {
   console.log("→ Réinitialisation…");
+  await db.articleLexeme.deleteMany();
+  await db.articleDocument.deleteMany();
+  await db.article.deleteMany();
   await db.verbStem.deleteMany();
   await db.revision.deleteMany();
   await db.contribution.deleteMany();
@@ -155,6 +159,7 @@ async function main() {
   await db.root.deleteMany();
   await db.speaker.deleteMany();
   await db.source.deleteMany();
+  await db.document.deleteMany();
   await db.area.deleteMany();
 
   for (const a of AREAS) await db.area.create({ data: { ...a, geojson: areaGeoJSON(a.id) } });
@@ -213,12 +218,34 @@ async function main() {
     }
   }
 
+  // Bibliothèque numérique (§16)
+  const docIds = {};
+  for (const d of DOCUMENTS) {
+    const { key, ...data } = d;
+    const doc = await db.document.create({ data });
+    docIds[key] = doc.id;
+  }
+
+  // Encyclopédie culturelle (§9)
+  for (const a of ARTICLES) {
+    const { lexemes = [], documents = [], ...data } = a;
+    const article = await db.article.create({ data });
+    for (const hw of lexemes) {
+      const lx = await db.lexeme.findFirst({ where: { headword: hw } });
+      if (lx) await db.articleLexeme.create({ data: { articleId: article.id, lexemeId: lx.id } });
+    }
+    for (const key of documents) {
+      if (docIds[key]) await db.articleDocument.create({ data: { articleId: article.id, documentId: docIds[key] } });
+    }
+  }
+
   // Comptes de démonstration (identité pseudonyme, sans mot de passe — cf. README)
   await db.user.create({ data: { pseudonym: "Fadimata", role: "moderator", reputation: 120 } });
   await db.user.create({ data: { pseudonym: "Moussa", role: "contributor", reputation: 15 } });
 
   const n = await db.lexeme.count();
-  console.log(`✓ Amorçage terminé : ${n} entrées, ${AREAS.length} aires (géométrie incluse), ${stemCount} radicaux verbaux, 2 comptes.`);
+  const na = await db.article.count(), nd = await db.document.count();
+  console.log(`✓ Amorçage terminé : ${n} entrées, ${AREAS.length} aires, ${stemCount} radicaux verbaux, ${na} fiches encyclopédiques, ${nd} documents, 2 comptes.`);
 }
 
 main()
