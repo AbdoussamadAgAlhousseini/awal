@@ -392,3 +392,13 @@ a:hover{text-decoration:underline}
 /* ============ authentification (§25) ============ */
 .oauth{display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top:18px}
 .oauth-btn{min-width:230px;text-align:center}
+
+/* ============ portail API (§22) ============ */
+.ep-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.ep-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  border:1px solid var(--line-soft);border-radius:10px;padding:10px 14px;background:var(--panel)}
+.ep-method{font-family:var(--mono);font-size:0.66rem;font-weight:700;color:var(--good);
+  border:1px solid color-mix(in srgb,var(--good) 45%,var(--line));border-radius:5px;padding:2px 7px;flex:none}
+.ep-path{font-family:var(--mono);font-size:0.86rem;color:var(--ink)}
+.ep-desc{font-size:0.85rem}
+.ep-try{margin-inline-start:auto;font-family:var(--mono);font-size:0.78rem;white-space:nowrap}

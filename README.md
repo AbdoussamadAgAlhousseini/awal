@@ -41,7 +41,8 @@ Sans aucune variable renseignée, l'application tourne en **mode prototype**
 | `/contribuer` | Proposer un mot, un exemple, une variante ou un enregistrement |
 | `/moderation` | File de validation (réservée aux valideurs) |
 | `/compte` | Identité pseudonyme, réputation, mes contributions |
-| `/api/lexemes?q=…` | API JSON publique (préfigure l'API v1, §22) |
+| `/api-doc` | Portail développeur : points d'accès, Linked Data, OpenAPI |
+| `/api/v1/…` | API publique v1 (voir ci-dessous) |
 
 ### Recherche (§13)
 
@@ -177,6 +178,29 @@ fonctionner en repli, pour ne rien casser.
 
 Vérifié : après un `npm run setup` complet, les 11 slugs sont **identiques** et
 `/mot/aman` répond toujours, alors que le `cuid` correspondant a changé.
+
+### API publique v1 & Linked Data (§22)
+
+Versionnée sous `/api/v1`, en **lecture publique** (CORS ouvert, cache court), avec
+pagination. Les identifiants sont les **slugs stables** (§8). Portail : `/api-doc`.
+
+| Point d'accès | Rôle |
+|---|---|
+| `GET /api/v1/lexemes?q=&limit=&offset=` | liste paginée ou recherche (moteur à 3 niveaux) |
+| `GET /api/v1/lexemes/{slug}` | une entrée (JSON) |
+| `GET /api/v1/lexemes/{slug}?format=jsonld` | une entrée en **Ontolex-Lemon** |
+| `GET /api/v1/lexicon.jsonld` | tout le lexique en **Linked Data** (dataset) |
+| `GET /api/v1/areas` | aires dialectales + géométrie indicative |
+| `GET /api/v1/openapi.json` | spécification **OpenAPI 3.1** |
+
+L'ancienne route `/api/lexemes` redirige (307) vers `/api/v1/lexemes`.
+
+**Linked Data** : les exports JSON-LD sont alignés sur **Ontolex-Lemon** (lexiques),
+**LexInfo** (catégories grammaticales), **SKOS** et **Dublin Core**. Ce n'est pas du JSON
+qui « ressemble » à du RDF : validé en l'expansant avec un vrai processeur JSON-LD, une
+entrée produit **33 triplets** et le lexique complet **275**, avec des prédicats résolus
+vers les IRI canoniques de ces vocabulaires. Le tamasheq est étiqueté `tmh` (ISO 639-3),
+sa graphie tifinagh `tmh-Tfng`. Licence **CC BY-SA 4.0**, citation par slug.
 
 ## Modèle de données
 

@@ -77,6 +77,7 @@ type Messages = {
     inArticles: string; all: string; empty: string;
   };
   cite: { permalink: string; stable: string };
+  apiNav: string;
   authx: {
     signInWith: string; prototypeTitle: string; prototypeWarn: string;
     verified: string; unverified: string; notConfigured: string;
@@ -184,6 +185,7 @@ export const messages: Record<Locale, Messages> = {
       all: "Tous", empty: "Aucun document de ce type.",
       kinds: { livre: "Livre", article: "Article", manuscrit: "Manuscrit", audio: "Audio", video: "Vidéo", archive: "Archive" },
     },
+    apiNav: "API",
     authx: {
       signInWith: "Se connecter avec",
       prototypeTitle: "Mode prototype",
@@ -305,6 +307,7 @@ export const messages: Record<Locale, Messages> = {
       all: "All", empty: "No document of this type.",
       kinds: { livre: "Book", article: "Article", manuscrit: "Manuscript", audio: "Audio", video: "Video", archive: "Archive" },
     },
+    apiNav: "API",
     authx: {
       signInWith: "Sign in with",
       prototypeTitle: "Prototype mode",
@@ -426,6 +429,7 @@ export const messages: Record<Locale, Messages> = {
       all: "الكل", empty: "لا توجد وثائق من هذا النوع.",
       kinds: { livre: "كتاب", article: "مقال", manuscrit: "مخطوط", audio: "صوت", video: "فيديو", archive: "أرشيف" },
     },
+    apiNav: "API",
     authx: {
       signInWith: "تسجيل الدخول عبر",
       prototypeTitle: "الوضع التجريبي",
