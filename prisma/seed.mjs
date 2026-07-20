@@ -3,6 +3,7 @@
 // avant toute publication de référence. Transcriptions simplifiées.
 
 import { PrismaClient } from "@prisma/client";
+import { phoneticKey } from "../src/lib/phonetics.mjs";
 const db = new PrismaClient();
 
 const AREAS = [
@@ -122,6 +123,9 @@ const LEXEMES = [
 
 async function main() {
   console.log("→ Réinitialisation…");
+  await db.revision.deleteMany();
+  await db.contribution.deleteMany();
+  await db.user.deleteMany();
   await db.example.deleteMany();
   await db.sense.deleteMany();
   await db.variant.deleteMany();
@@ -151,6 +155,7 @@ async function main() {
         register: lx.register ?? null,
         frequency: lx.frequency ?? null,
         etymology: lx.etymology ?? null,
+        phonetic: phoneticKey(lx.headword),
         rootId: root?.id ?? null,
         senses: {
           create: lx.senses.map((s, i) => ({
@@ -174,8 +179,12 @@ async function main() {
     });
   }
 
+  // Comptes de démonstration (identité pseudonyme, sans mot de passe — cf. README)
+  await db.user.create({ data: { pseudonym: "Fadimata", role: "moderator", reputation: 120 } });
+  await db.user.create({ data: { pseudonym: "Moussa", role: "contributor", reputation: 15 } });
+
   const n = await db.lexeme.count();
-  console.log(`✓ Amorçage terminé : ${n} entrées, ${AREAS.length} aires.`);
+  console.log(`✓ Amorçage terminé : ${n} entrées, ${AREAS.length} aires, 2 comptes.`);
 }
 
 main()

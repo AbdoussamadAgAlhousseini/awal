@@ -40,15 +40,62 @@ model Lexeme {
   register  String? // registre / niveau de langue
   frequency String? // fréquence d'usage
   etymology String?
+  phonetic  String    @default("") // squelette consonantique — recherche phonétique (§13)
   rootId    String?
   root      Root?     @relation(fields: [rootId], references: [id])
   senses    Sense[]
   variants  Variant[]
   media     Media[]
+  contributions Contribution[]
   status    String    @default("published") // draft | review | published | archived
   createdAt DateTime  @default(now())
 
   @@index([headword])
+  @@index([phonetic])
+}
+
+/// Compte contributeur (identité pseudonyme — l'auth OAuth2/OIDC est prévue en v1.0, §25)
+model User {
+  id            String         @id @default(cuid())
+  pseudonym     String         @unique
+  role          String         @default("contributor") // contributor | moderator
+  reputation    Int            @default(0)
+  createdAt     DateTime       @default(now())
+  contributions Contribution[] @relation("author")
+  reviews       Contribution[] @relation("reviewer")
+}
+
+/// Proposition soumise par un contributeur, en attente de validation (§18)
+model Contribution {
+  id         String    @id @default(cuid())
+  kind       String // new_lexeme | example | variant
+  status     String    @default("pending") // pending | approved | rejected
+  payload    String // JSON de la proposition
+  note       String? // commentaire du contributeur
+  authorId   String
+  author     User      @relation("author", fields: [authorId], references: [id])
+  lexemeId   String? // entrée visée (null pour un mot nouveau)
+  lexeme     Lexeme?   @relation(fields: [lexemeId], references: [id], onDelete: SetNull)
+  reviewerId String?
+  reviewer   User?     @relation("reviewer", fields: [reviewerId], references: [id])
+  reviewNote String?
+  createdAt  DateTime  @default(now())
+  reviewedAt DateTime?
+
+  @@index([status])
+}
+
+/// Journal d'audit : toute écriture métier est historisée et réversible (§21, §25)
+model Revision {
+  id        String   @id @default(cuid())
+  entity    String // lexeme | sense | example | variant
+  entityId  String
+  action    String // create | update | delete
+  payload   String?
+  userId    String?
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
 }
 
 /// Acception (un mot peut avoir plusieurs sens)

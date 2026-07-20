@@ -143,6 +143,15 @@ export default async function EntryPage({ params }: { params: Promise<{ id: stri
             )}
           </div>
 
+          <div className="entry-actions">
+            <Link href={`/contribuer?kind=example&lexeme=${lx.id}`} className="btn">
+              + {t.contrib.kindExample}
+            </Link>
+            <Link href={`/contribuer?kind=variant&lexeme=${lx.id}`} className="btn">
+              + {t.contrib.kindVariant}
+            </Link>
+          </div>
+
           <div className="note">{t.entryNote}</div>
         </article>
       </div>

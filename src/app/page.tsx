@@ -1,32 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
 import { getLocale } from "@/lib/locale";
 import { messages, posLabel, type Locale } from "@/lib/i18n";
+import { searchLexemes } from "@/lib/search";
 import SiteHeader from "@/components/SiteHeader";
 
 export const dynamic = "force-dynamic";
 
 type SP = { q?: string };
-
-async function searchLexemes(q: string) {
-  const term = q.trim();
-  if (!term) return [];
-  // Recherche tolérante : latin (headword / variantes), tifinagh, ou traduction.
-  return db.lexeme.findMany({
-    where: {
-      OR: [
-        { headword: { contains: term } },
-        { tifinagh: { contains: term } },
-        { variants: { some: { form: { contains: term } } } },
-        { senses: { some: { OR: [{ defShort: { contains: term } }, { translations: { contains: term } }] } } },
-      ],
-    },
-    include: { senses: { orderBy: { order: "asc" }, take: 1 } },
-    orderBy: { headword: "asc" },
-    take: 40,
-  });
-}
 
 const SUGGESTIONS = [
   { hw: "aman", tif: "ⴰⵎⴰⵏ" },
@@ -36,13 +17,13 @@ const SUGGESTIONS = [
   { hw: "afus", tif: "ⴰⴼⵓⵙ" },
 ];
 
-function glossFor(locale: Locale, defShort: string, translations: string | null): string {
-  if (locale === "fr") return defShort;
+function glossFor(locale: Locale, defShort: string | null, translations: string | null): string {
+  if (locale === "fr") return defShort ?? "";
   try {
     const tr = translations ? (JSON.parse(translations) as Record<string, string>) : {};
-    return tr[locale] || defShort;
+    return tr[locale] || defShort || "";
   } catch {
-    return defShort;
+    return defShort ?? "";
   }
 }
 
@@ -52,7 +33,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<SP>
 
   const t = messages[locale];
   const { q = "" } = await searchParams;
-  const results = q.trim() ? await searchLexemes(q) : [];
+  const { hits, approximate } = q.trim()
+    ? await searchLexemes(q)
+    : { hits: [], approximate: false };
 
   return (
     <>
@@ -72,6 +55,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<SP>
               defaultValue={q}
               placeholder={t.searchPlaceholder}
               aria-label={t.searchAria}
+              dir="auto"
               autoFocus
             />
             <button type="submit">{t.searchBtn}</button>
@@ -90,32 +74,34 @@ export default async function Home({ searchParams }: { searchParams: Promise<SP>
 
         {q.trim() && (
           <section className="results">
-            <div className="rescount">{t.resultsFor(results.length, q)}</div>
-            {results.length === 0 ? (
+            <div className="rescount">{t.resultsFor(hits.length, q)}</div>
+
+            {approximate && <div className="flash warn">{t.approximateHint}</div>}
+
+            {hits.length === 0 ? (
               <div className="empty">
                 {t.noResults(q)}
                 <br />
                 {t.noResultsHint}
+                <div style={{ marginTop: 14 }}>
+                  <Link href="/contribuer?kind=new_lexeme" className="btn">
+                    {t.contrib.open}
+                  </Link>
+                </div>
               </div>
             ) : (
-              results.map((lx) => {
-                const s = lx.senses[0];
-                return (
-                  <Link key={lx.id} className="res" href={`/mot/${lx.id}`}>
-                    <div className="top">
-                      <span className="hw-tif tif">{lx.tifinagh}</span>
-                      <span className="hw">{lx.headword}</span>
-                      {lx.ipa && <span className="ipa" dir="ltr">{lx.ipa}</span>}
-                      <span className="pos">{posLabel(locale, lx.pos)}</span>
-                    </div>
-                    {s && (
-                      <p className="def" dir="auto">
-                        {glossFor(locale, s.defShort, s.translations)}
-                      </p>
-                    )}
-                  </Link>
-                );
-              })
+              hits.map((h) => (
+                <Link key={h.id} className="res" href={`/mot/${h.id}`}>
+                  <div className="top">
+                    <span className="hw-tif tif">{h.tifinagh}</span>
+                    <span className="hw">{h.headword}</span>
+                    {h.ipa && <span className="ipa" dir="ltr">{h.ipa}</span>}
+                    <span className="pos">{posLabel(locale, h.pos)}</span>
+                    {h.score < 70 && <span className="approx">≈</span>}
+                  </div>
+                  <p className="def" dir="auto">{glossFor(locale, h.defShort, h.translations)}</p>
+                </Link>
+              ))
             )}
           </section>
         )}
