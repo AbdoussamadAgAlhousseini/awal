@@ -9,6 +9,7 @@ import { USER_COOKIE, getCurrentUser, isModerator } from "@/lib/session";
 import { applyContribution } from "@/lib/contributions";
 import { schedule, RATINGS } from "@/lib/srs.mjs";
 import { db } from "@/lib/db";
+import { signIn as authSignIn, signOut as authSignOut, authConfigured } from "@/auth";
 
 /** Enregistre la langue choisie (cookie 1 an) puis revient à la page voulue. */
 export async function setLocale(formData: FormData) {
@@ -22,11 +23,29 @@ export async function setLocale(formData: FormData) {
   redirect(next.startsWith("/") ? next : "/");
 }
 
+/** Connexion via un fournisseur d'identité (§25). */
+export async function oauthSignIn(providerId: string) {
+  if (!authConfigured || !authSignIn) redirect("/compte");
+  await authSignIn(providerId, { redirectTo: "/compte" });
+}
+
+/** Déconnexion d'une session Auth.js. */
+export async function oauthSignOut() {
+  if (!authConfigured || !authSignOut) redirect("/compte");
+  await authSignOut({ redirectTo: "/compte" });
+}
+
 /**
- * Identité pseudonyme (prototype). Le code de modération est un garde simple lu
- * dans l'environnement ; la v1.0 doit passer par OAuth2/OIDC + MFA (§25).
+ * Identité pseudonyme — MODE PROTOTYPE UNIQUEMENT.
+ *
+ * Le code de modération est un garde simple lu dans l'environnement : il ne prouve
+ * rien sur l'identité de qui l'emploie. Cette voie se ferme d'elle-même dès qu'un
+ * fournisseur OAuth est configuré (§25).
  */
 export async function signIn(formData: FormData) {
+  // Porte dérobée fermée dès que l'authentification réelle est en place.
+  if (authConfigured) redirect("/compte");
+
   const pseudonym = String(formData.get("pseudonym") || "").trim().slice(0, 40);
   const code = String(formData.get("moderatorCode") || "").trim();
   if (!pseudonym) redirect("/compte?e=1");

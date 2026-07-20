@@ -77,6 +77,10 @@ type Messages = {
     inArticles: string; all: string; empty: string;
   };
   cite: { permalink: string; stable: string };
+  authx: {
+    signInWith: string; prototypeTitle: string; prototypeWarn: string;
+    verified: string; unverified: string; notConfigured: string;
+  };
   conj: {
     title: string; aspect: string; person: string; stem: string;
     notDocumented: string; attested: string; toValidate: string; note: string;
@@ -179,6 +183,13 @@ export const messages: Record<Locale, Messages> = {
       consult: "Consulter la source", noViewer: "Aucune visionneuse IIIF n'est branchée : la plateforme ne dispose ni de documents numérisés ni de serveur d'images. Le catalogue décrit les références, il ne les héberge pas.", inArticles: "Cité dans",
       all: "Tous", empty: "Aucun document de ce type.",
       kinds: { livre: "Livre", article: "Article", manuscrit: "Manuscrit", audio: "Audio", video: "Vidéo", archive: "Archive" },
+    },
+    authx: {
+      signInWith: "Se connecter avec",
+      prototypeTitle: "Mode prototype",
+      prototypeWarn: "Aucun fournisseur d'identité n'est configuré : ce pseudonyme n'authentifie personne et n'importe qui peut le réclamer. À ne pas exposer publiquement en l'état.",
+      verified: "identité vérifiée", unverified: "non vérifiée",
+      notConfigured: "Authentification réelle prête, en attente d'identifiants — voir .env.example.",
     },
     cite: { permalink: "Lien permanent", stable: "Cette adresse est stable : elle est dérivée de la forme vedette, pas d'un identifiant technique." },
     conj: {
@@ -294,6 +305,13 @@ export const messages: Record<Locale, Messages> = {
       all: "All", empty: "No document of this type.",
       kinds: { livre: "Book", article: "Article", manuscrit: "Manuscript", audio: "Audio", video: "Video", archive: "Archive" },
     },
+    authx: {
+      signInWith: "Sign in with",
+      prototypeTitle: "Prototype mode",
+      prototypeWarn: "No identity provider is configured: this pseudonym authenticates nobody and anyone can claim it. Do not expose it publicly as is.",
+      verified: "verified identity", unverified: "unverified",
+      notConfigured: "Real authentication is wired up, awaiting credentials — see .env.example.",
+    },
     cite: { permalink: "Permalink", stable: "This address is stable: it derives from the headword, not from a technical identifier." },
     conj: {
       title: "Conjugation", aspect: "Aspect", person: "Person", stem: "stem",
@@ -407,6 +425,13 @@ export const messages: Record<Locale, Messages> = {
       consult: "الاطلاع على المصدر", noViewer: "لا يوجد عارض IIIF: المنصة لا تملك وثائق مرقمنة ولا خادم صور. الفهرس يصف المراجع ولا يستضيفها.", inArticles: "مذكور في",
       all: "الكل", empty: "لا توجد وثائق من هذا النوع.",
       kinds: { livre: "كتاب", article: "مقال", manuscrit: "مخطوط", audio: "صوت", video: "فيديو", archive: "أرشيف" },
+    },
+    authx: {
+      signInWith: "تسجيل الدخول عبر",
+      prototypeTitle: "الوضع التجريبي",
+      prototypeWarn: "لا يوجد مزوّد هوية مُهيَّأ: هذا الاسم المستعار لا يُوثِّق أحداً ويمكن لأي شخص ادّعاؤه. لا تنشره علناً بهذه الحالة.",
+      verified: "هوية موثّقة", unverified: "غير موثّقة",
+      notConfigured: "المصادقة الحقيقية جاهزة وتنتظر بيانات الاعتماد — راجع .env.example.",
     },
     cite: { permalink: "رابط دائم", stable: "هذا العنوان ثابت: مشتق من الكلمة المدخلة لا من معرّف تقني." },
     conj: {

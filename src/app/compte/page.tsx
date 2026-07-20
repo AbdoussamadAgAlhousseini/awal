@@ -6,6 +6,8 @@ import { getLocale } from "@/lib/locale";
 import { messages, DEFAULT_LOCALE, type Locale } from "@/lib/i18n";
 import { parsePayload } from "@/lib/contributions";
 import SiteHeader from "@/components/SiteHeader";
+import { authConfigured, enabledProviders } from "@/auth";
+import { oauthSignIn, oauthSignOut } from "@/app/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -35,8 +37,24 @@ export default async function Account({ searchParams }: { searchParams: Promise<
           {e && <div className="flash err">{t.contrib.required}</div>}
 
           {!user ? (
+            authConfigured ? (
+              <div className="oauth">
+                <p className="muted">{t.acc.intro}</p>
+                {enabledProviders.map((p) => (
+                  <form key={p.id} action={oauthSignIn.bind(null, p.id)}>
+                    <button type="submit" className="btn primary oauth-btn">
+                      {t.authx.signInWith} {p.label}
+                    </button>
+                  </form>
+                ))}
+              </div>
+            ) : (
             <>
-              <p className="muted">{t.acc.intro}</p>
+              <div className="flash warn">
+                <b>{t.authx.prototypeTitle}</b> — {t.authx.prototypeWarn}
+                <br />
+                <span className="muted small">{t.authx.notConfigured}</span>
+              </div>
               <form action={signIn} className="form">
                 <label className="field-row">
                   <span>{t.acc.pseudonym}</span>
@@ -50,6 +68,7 @@ export default async function Account({ searchParams }: { searchParams: Promise<
                 <button type="submit" className="btn primary">{t.acc.signIn}</button>
               </form>
             </>
+            )
           ) : (
             <>
               <div className="profile">
@@ -62,8 +81,11 @@ export default async function Account({ searchParams }: { searchParams: Promise<
                     {" · "}
                     {t.acc.reputation} : <b>{user.reputation}</b>
                   </div>
+                  <span className={`badge ${user.origin === "oauth" ? "approved" : "pending"}`}>
+                    {user.origin === "oauth" ? t.authx.verified : t.authx.unverified}
+                  </span>
                 </div>
-                <form action={signOut} style={{ marginInlineStart: "auto" }}>
+                <form action={user.origin === "oauth" ? oauthSignOut : signOut} style={{ marginInlineStart: "auto" }}>
                   <button type="submit" className="btn">{t.acc.signOut}</button>
                 </form>
               </div>

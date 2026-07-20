@@ -19,10 +19,13 @@ apprentissage, laboratoire linguistique et API ouverte.
 
 ```bash
 npm install
-cp .env.example .env.local     # puis choisissez un AWAL_MODERATOR_CODE
+cp .env.example .env.local     # toutes les variables sont vides par défaut
 npm run setup                  # base SQLite + données d'amorçage
 npm run dev                    # http://localhost:3000
 ```
+
+Sans aucune variable renseignée, l'application tourne en **mode prototype**
+(identité pseudonyme). Pour activer l'authentification réelle, voir ci-dessous.
 
 ## Fonctionnalités
 
@@ -133,6 +136,34 @@ La case de consentement est obligatoire à la soumission.
 la plateforme **ne synthétise pas** de prononciation : présenter une voix générée comme
 référence d'une langue menacée serait nuisible.
 
+### Authentification (§25)
+
+Le câblage **Auth.js (NextAuth v5)** est complet et **attend uniquement des identifiants** ;
+il est conçu pour ne rien casser tant qu'ils sont absents.
+
+- **Aucune variable renseignée → mode prototype** : identité pseudonyme sans mot de passe,
+  clairement signalée comme n'authentifiant personne. Vérifié : les 11 routes répondent
+  200 et `/api/auth/*` renvoie un `503 auth_not_configured` lisible plutôt qu'un plantage.
+- **`AUTH_SECRET` + les identifiants d'un fournisseur (GitHub et/ou Google) →
+  authentification réelle** : l'écran de compte bascule automatiquement en boutons OAuth,
+  la voie pseudonyme se **ferme** (pas de porte dérobée coexistante), et le rôle valideur
+  est accordé selon `AWAL_MODERATOR_EMAILS` — une **liste d'adresses vérifiées**, réévaluée
+  à chaque connexion, qui remplace le code de modération partagé du prototype.
+
+Activation, sans qu'aucun secret n'entre dans le dépôt (`.env*` est ignoré) :
+
+```bash
+# 1) openssl rand -base64 32   → AUTH_SECRET
+# 2) créer une app OAuth chez le fournisseur ; callback :
+#    http://localhost:3000/api/auth/callback/github
+# 3) renseigner AUTH_GITHUB_ID / AUTH_GITHUB_SECRET (et/ou Google) dans .env.local
+# 4) AWAL_MODERATOR_EMAILS=vous@exemple.org
+```
+
+Le point d'intégration est `getCurrentUser()` (`src/lib/session.ts`) : il préfère la
+session Auth.js dès qu'un fournisseur est configuré, et ne retombe sur le cookie
+prototype que sinon. Tout le reste (contribution, modération, cartes) en dépend déjà.
+
 ### Identifiants stables et citables (§8)
 
 Les URL de fiches reposaient sur l'identifiant technique (`cuid`), **régénéré à chaque
@@ -151,7 +182,8 @@ Vérifié : après un `npm run setup` complet, les 11 slugs sont **identiques** 
 
 Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Example`, `Root`,
 `Variant`, `Area`, `Media`, `Speaker`, `Source`, `VerbStem`, `Article`, `Document`,
-`User`, `Card`, `Contribution`, `Revision` — aligné sur §21.
+`User`, `Card`, `Contribution`, `Revision`, plus les modèles Auth.js
+(`Account`, `Session`, `VerificationToken`) — aligné sur §21.
 
 ## ⚠️ Limites assumées à ce stade
 
@@ -164,9 +196,10 @@ Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Exampl
   elles n'ont pas été relues par un comité scientifique.
 - **Métadonnées bibliographiques à vérifier** : les notices renvoient à des ouvrages réels
   mais leurs détails (édition, pagination) doivent être confirmés sur les exemplaires.
-- **Identité pseudonyme sans mot de passe** : le code de modération est un garde simple.
-  L'authentification réelle (OAuth2/OIDC + MFA, §25) **n'est pas faite** et reste un
-  prérequis bloquant avant toute mise en ligne publique.
+- **Authentification réelle câblée mais pas activée** : il faut renseigner `AUTH_SECRET`
+  et les identifiants d'un fournisseur OAuth pour sortir du mode prototype. C'est le
+  dernier prérequis avant une mise en ligne publique — et il ne dépend plus que de la
+  fourniture d'identifiants, pas de développement.
 - **Recherche en mémoire** pour les niveaux 2-3 : correct à cette échelle, à migrer vers
   OpenSearch + `pg_trgm` (§13, §26).
 - « Awal » est un **nom de travail**, à valider avec les institutions partenaires.

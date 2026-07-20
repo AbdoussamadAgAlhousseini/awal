@@ -388,3 +388,7 @@ a:hover{text-decoration:underline}
 .pl-url{font-family:var(--mono);font-size:0.86rem;color:var(--ink);
   background:var(--panel-2);border-radius:6px;padding:3px 9px}
 .pl-note{font-size:0.8rem;color:var(--ink-faint);flex:1;min-width:200px}
+
+/* ============ authentification (§25) ============ */
+.oauth{display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top:18px}
+.oauth-btn{min-width:230px;text-align:center}

@@ -77,16 +77,66 @@ model VerbStem {
   @@unique([lexemeId, aspect])
 }
 
-/// Compte contributeur (identité pseudonyme — l'auth OAuth2/OIDC est prévue en v1.0, §25)
+/// Compte contributeur.
+///
+/// Deux voies d'identification coexistent :
+///  - OAuth2/OIDC via Auth.js (§25), dès qu'un fournisseur est configuré ;
+///  - identité pseudonyme sans mot de passe, mode PROTOTYPE, actif tant qu'aucun
+///    fournisseur ne l'est. Cf. src/auth.ts.
+/// `pseudonym` reste le nom public affiché dans les contributions, quelle que soit la voie.
 model User {
   id            String         @id @default(cuid())
   pseudonym     String         @unique
   role          String         @default("contributor") // contributor | moderator
   reputation    Int            @default(0)
   createdAt     DateTime       @default(now())
+
+  // Champs attendus par Auth.js (vides en mode prototype)
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
   contributions Contribution[] @relation("author")
   reviews       Contribution[] @relation("reviewer")
   cards         Card[]
+}
+
+/// Liaison à un fournisseur d'identité externe (Auth.js).
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+/// Session persistée (Auth.js, stratégie « database »).
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+/// Jeton de vérification (lien par e-mail, Auth.js).
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
 }
 
 /// Proposition soumise par un contributeur, en attente de validation (§18)
