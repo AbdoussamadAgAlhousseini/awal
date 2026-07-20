@@ -33,6 +33,10 @@ model Root {
 /// Entrée lexicale — objet central du dictionnaire
 model Lexeme {
   id        String    @id @default(cuid())
+  /// Identifiant public, stable et citable (§8) : dérivé de la forme vedette et
+  /// reproductible d'une base à l'autre. C'est LUI qui figure dans les URL ;
+  /// `id` reste la clé technique interne.
+  slug      String    @unique @default("")
   headword  String // forme vedette (latin normalisé)
   tifinagh  String
   ipa       String?

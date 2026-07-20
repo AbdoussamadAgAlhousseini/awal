@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { phoneticKey } from "@/lib/phonetics.mjs";
+import { slugify } from "@/lib/slug.mjs";
 
 export type Payload = Record<string, string>;
 
@@ -38,8 +39,14 @@ export async function applyContribution(contributionId: string, reviewerId: stri
     const headword = (p.headword || "").trim();
     if (!headword) return null;
 
+    // Slug stable, désambiguïsé si la forme existe déjà (§8).
+    const base = slugify(headword);
+    let slug = base;
+    for (let n = 2; await db.lexeme.findUnique({ where: { slug } }); n++) slug = `${base}-${n}`;
+
     const lexeme = await db.lexeme.create({
       data: {
+        slug,
         headword,
         tifinagh: (p.tifinagh || "").trim(),
         ipa: p.ipa?.trim() || null,

@@ -76,6 +76,7 @@ type Messages = {
     consult: string; noViewer: string; kinds: Record<string, string>;
     inArticles: string; all: string; empty: string;
   };
+  cite: { permalink: string; stable: string };
   conj: {
     title: string; aspect: string; person: string; stem: string;
     notDocumented: string; attested: string; toValidate: string; note: string;
@@ -179,6 +180,7 @@ export const messages: Record<Locale, Messages> = {
       all: "Tous", empty: "Aucun document de ce type.",
       kinds: { livre: "Livre", article: "Article", manuscrit: "Manuscrit", audio: "Audio", video: "Vidéo", archive: "Archive" },
     },
+    cite: { permalink: "Lien permanent", stable: "Cette adresse est stable : elle est dérivée de la forme vedette, pas d'un identifiant technique." },
     conj: {
       title: "Conjugaison", aspect: "Aspect", person: "Personne", stem: "radical",
       notDocumented: "Radical non documenté pour cet aspect — aucune forme n'est générée.",
@@ -292,6 +294,7 @@ export const messages: Record<Locale, Messages> = {
       all: "All", empty: "No document of this type.",
       kinds: { livre: "Book", article: "Article", manuscrit: "Manuscript", audio: "Audio", video: "Video", archive: "Archive" },
     },
+    cite: { permalink: "Permalink", stable: "This address is stable: it derives from the headword, not from a technical identifier." },
     conj: {
       title: "Conjugation", aspect: "Aspect", person: "Person", stem: "stem",
       notDocumented: "No documented stem for this aspect — no form is generated.",
@@ -405,6 +408,7 @@ export const messages: Record<Locale, Messages> = {
       all: "الكل", empty: "لا توجد وثائق من هذا النوع.",
       kinds: { livre: "كتاب", article: "مقال", manuscrit: "مخطوط", audio: "صوت", video: "فيديو", archive: "أرشيف" },
     },
+    cite: { permalink: "رابط دائم", stable: "هذا العنوان ثابت: مشتق من الكلمة المدخلة لا من معرّف تقني." },
     conj: {
       title: "التصريف", aspect: "الصيغة", person: "الضمير", stem: "الجذع",
       notDocumented: "لا يوجد جذع موثّق لهذه الصيغة — لم تُولَّد أي صيغة.",

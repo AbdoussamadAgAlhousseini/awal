@@ -3,6 +3,7 @@ import { phoneticKey, looseNormalize, levenshtein, hasTifinagh } from "@/lib/pho
 
 export type Hit = {
   id: string;
+  slug: string;
   headword: string;
   tifinagh: string;
   ipa: string | null;
@@ -14,6 +15,7 @@ export type Hit = {
 
 const SELECT = {
   id: true,
+  slug: true,
   headword: true,
   tifinagh: true,
   ipa: true,
@@ -24,14 +26,14 @@ const SELECT = {
 };
 
 type Row = {
-  id: string; headword: string; tifinagh: string; ipa: string | null; pos: string; phonetic: string;
+  id: string; slug: string; headword: string; tifinagh: string; ipa: string | null; pos: string; phonetic: string;
   senses: { defShort: string; translations: string | null }[];
   variants: { form: string }[];
 };
 
 function toHit(r: Row, score: number): Hit {
   return {
-    id: r.id, headword: r.headword, tifinagh: r.tifinagh, ipa: r.ipa, pos: r.pos,
+    id: r.id, slug: r.slug, headword: r.headword, tifinagh: r.tifinagh, ipa: r.ipa, pos: r.pos,
     defShort: r.senses[0]?.defShort ?? null,
     translations: r.senses[0]?.translations ?? null,
     score,

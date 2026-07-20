@@ -77,7 +77,7 @@ export default async function Moderation({
   const pending = await db.contribution.findMany({
     where: { status: "pending" },
     orderBy: { createdAt: "asc" },
-    include: { author: { select: { pseudonym: true } }, lexeme: { select: { id: true, headword: true } } },
+    include: { author: { select: { pseudonym: true } }, lexeme: { select: { id: true, slug: true, headword: true } } },
   });
 
   const recent = await db.contribution.findMany({
@@ -139,7 +139,7 @@ export default async function Moderation({
                       {c.lexeme && (
                         <>
                           {" · "}
-                          <Link href={`/mot/${c.lexeme.id}`}>{c.lexeme.headword}</Link>
+                          <Link href={`/mot/${c.lexeme.slug || c.lexeme.id}`}>{c.lexeme.headword}</Link>
                         </>
                       )}
                     </span>

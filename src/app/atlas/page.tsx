@@ -4,6 +4,7 @@ import { getLocale } from "@/lib/locale";
 import { messages, DEFAULT_LOCALE, type Locale } from "@/lib/i18n";
 import { AREA_SHAPES, LANDMARKS, VIEW, project, ringToPath, ringCentroid } from "@/lib/geo.mjs";
 import SiteHeader from "@/components/SiteHeader";
+import { refWhere } from "@/lib/lexeme-ref";
 
 export const dynamic = "force-dynamic";
 
@@ -22,8 +23,8 @@ export default async function Atlas({ searchParams }: { searchParams: Promise<SP
 
   // Mode « répartition d'un terme » : quelles aires attestent ce mot, sous quelle forme ?
   const lexeme = terme
-    ? await db.lexeme.findUnique({
-        where: { id: terme },
+    ? await db.lexeme.findFirst({
+        where: refWhere(terme),
         include: { variants: { include: { area: true } } },
       })
     : null;

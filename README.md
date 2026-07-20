@@ -30,10 +30,10 @@ npm run dev                    # http://localhost:3000
 |-------|------|
 | `/bienvenue` | Choix de la langue au premier écran (FR / EN / AR) |
 | `/` | Recherche à trois niveaux (voir ci-dessous) |
-| `/mot/[id]` | Fiche : sens, traductions fr/en/ar, racine, étymologie, variantes |
+| `/mot/[slug]` | Fiche : sens, traductions fr/en/ar, racine, étymologie, variantes |
 | `/encyclopedie` | Fiches culturelles par catégorie ; `/encyclopedie/[slug]` |
 | `/bibliotheque` | Catalogue de références ; `/bibliotheque/[id]` |
-| `/atlas` | Atlas linguistique ; `?terme=<id>` cartographie la répartition d'un mot |
+| `/atlas` | Atlas linguistique ; `?terme=<slug>` cartographie la répartition d’un mot |
 | `/apprendre` | Révision en répétition espacée (SM-2) |
 | `/contribuer` | Proposer un mot, un exemple, une variante ou un enregistrement |
 | `/moderation` | File de validation (réservée aux valideurs) |
@@ -133,6 +133,20 @@ La case de consentement est obligatoire à la soumission.
 la plateforme **ne synthétise pas** de prononciation : présenter une voix générée comme
 référence d'une langue menacée serait nuisible.
 
+### Identifiants stables et citables (§8)
+
+Les URL de fiches reposaient sur l'identifiant technique (`cuid`), **régénéré à chaque
+ré-amorçage** : toute adresse citée devenait caduque. Un ouvrage de référence ne peut pas
+se permettre des liens qui pourrissent.
+
+Chaque entrée porte désormais un **slug déterministe** dérivé de la forme vedette
+(`eɣlan` → `/mot/eghlan`, `aḍu` → `/mot/adu`, `ⴰⵎⴰⵏ` → `/mot/aman`). Le `cuid` reste la clé
+technique interne, jamais exposée. Les anciens liens par identifiant continuent de
+fonctionner en repli, pour ne rien casser.
+
+Vérifié : après un `npm run setup` complet, les 11 slugs sont **identiques** et
+`/mot/aman` répond toujours, alors que le `cuid` correspondant a changé.
+
 ## Modèle de données
 
 Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Example`, `Root`,
@@ -153,8 +167,6 @@ Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Exampl
 - **Identité pseudonyme sans mot de passe** : le code de modération est un garde simple.
   L'authentification réelle (OAuth2/OIDC + MFA, §25) **n'est pas faite** et reste un
   prérequis bloquant avant toute mise en ligne publique.
-- **Identifiants non stables** : un `npm run setup` régénère les ID, donc les URL de fiches
-  changent. Des identifiants persistants et citables sont requis avant toute diffusion (§8).
 - **Recherche en mémoire** pour les niveaux 2-3 : correct à cette échelle, à migrer vers
   OpenSearch + `pg_trgm` (§13, §26).
 - « Awal » est un **nom de travail**, à valider avec les institutions partenaires.

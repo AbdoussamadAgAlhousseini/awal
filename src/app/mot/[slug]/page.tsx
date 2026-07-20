@@ -9,6 +9,7 @@ import Recordings from "@/components/Recordings";
 import { listPublishableRecordings } from "@/lib/audio";
 import { addToDeck } from "@/app/actions";
 import { getCurrentUser } from "@/lib/session";
+import { findLexemeByRef, lexemeHref } from "@/lib/lexeme-ref";
 
 export const dynamic = "force-dynamic";
 
@@ -21,20 +22,17 @@ function parseTr(json: string | null): Record<string, string> {
   }
 }
 
-export default async function EntryPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function EntryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   // Les liens profonds fonctionnent sans choix préalable : on retombe sur la langue par défaut.
   const locale: Locale = (await getLocale()) ?? DEFAULT_LOCALE;
   const t = messages[locale];
 
-  const lx = await db.lexeme.findUnique({
-    where: { id },
-    include: {
+  const lx = await findLexemeByRef(slug, {
       root: true,
       senses: { orderBy: { order: "asc" }, include: { examples: { include: { source: true } } } },
       variants: { include: { area: true } },
       verbStems: true,
-    },
   });
 
   if (!lx) notFound();
@@ -47,7 +45,7 @@ export default async function EntryPage({ params }: { params: Promise<{ id: stri
 
   return (
     <>
-      <SiteHeader locale={locale} next={`/mot/${lx.id}`} />
+      <SiteHeader locale={locale} next={lexemeHref(lx)} />
       <div className="wrap">
         <article>
           <Link href="/" className="back">{t.back}</Link>
@@ -169,18 +167,24 @@ export default async function EntryPage({ params }: { params: Promise<{ id: stri
                   <button type="submit" className="btn primary">{t.learn.addToDeck}</button>
                 </form>
               ))}
-            <Link href={`/contribuer?kind=audio&lexeme=${lx.id}`} className="btn">
+            <Link href={`/contribuer?kind=audio&lexeme=${lx.slug || lx.id}`} className="btn">
               + {t.contrib.kindAudio}
             </Link>
-            <Link href={`/atlas?terme=${lx.id}`} className="btn">
+            <Link href={`/atlas?terme=${lx.slug || lx.id}`} className="btn">
               {t.atlas.viewOnAtlas}
             </Link>
-            <Link href={`/contribuer?kind=example&lexeme=${lx.id}`} className="btn">
+            <Link href={`/contribuer?kind=example&lexeme=${lx.slug || lx.id}`} className="btn">
               + {t.contrib.kindExample}
             </Link>
-            <Link href={`/contribuer?kind=variant&lexeme=${lx.id}`} className="btn">
+            <Link href={`/contribuer?kind=variant&lexeme=${lx.slug || lx.id}`} className="btn">
               + {t.contrib.kindVariant}
             </Link>
+          </div>
+
+          <div className="permalink">
+            <span className="pl-label">{t.cite.permalink}</span>
+            <code className="pl-url" dir="ltr">/mot/{lx.slug || lx.id}</code>
+            <span className="pl-note">{t.cite.stable}</span>
           </div>
 
           <div className="note">{t.entryNote}</div>

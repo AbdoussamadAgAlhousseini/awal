@@ -65,7 +65,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               <h3 className="sub-h">{t.enc.relatedTerms}</h3>
               <div className="chips" style={{ justifyContent: "flex-start" }}>
                 {article.lexemes.map(({ lexeme }) => (
-                  <Link key={lexeme.id} className="chip" href={`/mot/${lexeme.id}`}>
+                  <Link key={lexeme.id} className="chip" href={`/mot/${lexeme.slug || lexeme.id}`}>
                     <span className="tif">{lexeme.tifinagh}</span> {lexeme.headword}
                   </Link>
                 ))}

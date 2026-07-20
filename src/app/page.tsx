@@ -91,7 +91,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<SP>
               </div>
             ) : (
               hits.map((h) => (
-                <Link key={h.id} className="res" href={`/mot/${h.id}`}>
+                <Link key={h.id} className="res" href={`/mot/${h.slug}`}>
                   <div className="top">
                     <span className="hw-tif tif">{h.tifinagh}</span>
                     <span className="hw">{h.headword}</span>

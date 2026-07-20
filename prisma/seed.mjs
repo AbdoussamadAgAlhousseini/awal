@@ -5,6 +5,7 @@
 import { PrismaClient } from "@prisma/client";
 import { phoneticKey } from "../src/lib/phonetics.mjs";
 import { areaGeoJSON } from "../src/lib/geo.mjs";
+import { slugify, uniqueSlug } from "../src/lib/slug.mjs";
 import { ARTICLES, DOCUMENTS } from "./seed-corpus.mjs";
 const db = new PrismaClient();
 
@@ -165,13 +166,19 @@ async function main() {
   for (const a of AREAS) await db.area.create({ data: { ...a, geojson: areaGeoJSON(a.id) } });
   const source = await db.source.create({ data: SOURCE });
 
+  const takenSlugs = new Set();
   for (const lx of LEXEMES) {
     const root = lx.root
       ? await db.root.upsert({ where: { radicals: lx.root }, update: {}, create: { radicals: lx.root } })
       : null;
 
+    // Slug calculé UNE fois, puis réservé : l'inverse produirait un suffixe parasite.
+    const slug = uniqueSlug(slugify(lx.headword), takenSlugs);
+    takenSlugs.add(slug);
+
     await db.lexeme.create({
       data: {
+        slug,
         headword: lx.headword,
         tifinagh: lx.tifinagh,
         ipa: lx.ipa,

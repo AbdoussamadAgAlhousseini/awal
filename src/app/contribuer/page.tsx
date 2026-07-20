@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/session";
 import { getLocale } from "@/lib/locale";
 import { messages, DEFAULT_LOCALE, type Locale } from "@/lib/i18n";
 import SiteHeader from "@/components/SiteHeader";
+import { refWhere } from "@/lib/lexeme-ref";
 
 export const dynamic = "force-dynamic";
 
@@ -20,13 +21,13 @@ export default async function Contribute({ searchParams }: { searchParams: Promi
 
   const areas = await db.area.findMany({ orderBy: { country: "asc" } });
   const lexeme = sp.lexeme
-    ? await db.lexeme.findUnique({
-        where: { id: sp.lexeme },
+    ? await db.lexeme.findFirst({
+        where: refWhere(sp.lexeme),
         include: { senses: { orderBy: { order: "asc" } } },
       })
     : null;
 
-  const qs = (k: string) => `/contribuer?kind=${k}${lexeme ? `&lexeme=${lexeme.id}` : ""}`;
+  const qs = (k: string) => `/contribuer?kind=${k}${lexeme ? `&lexeme=${lexeme.slug || lexeme.id}` : ""}`;
   const needsEntry = ["example", "variant", "audio"].includes(kind) && !lexeme;
 
   return (

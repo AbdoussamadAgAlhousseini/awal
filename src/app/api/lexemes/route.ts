@@ -33,6 +33,7 @@ export async function GET(request: Request) {
 
   const data = rows.map((lx) => ({
     id: lx.id,
+    slug: lx.slug,
     headword: lx.headword,
     tifinagh: lx.tifinagh,
     ipa: lx.ipa,

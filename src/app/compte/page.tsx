@@ -20,7 +20,7 @@ export default async function Account({ searchParams }: { searchParams: Promise<
         where: { authorId: user.id },
         orderBy: { createdAt: "desc" },
         take: 25,
-        include: { lexeme: { select: { headword: true, id: true } } },
+        include: { lexeme: { select: { headword: true, id: true, slug: true } } },
       })
     : [];
 
@@ -84,7 +84,7 @@ export default async function Account({ searchParams }: { searchParams: Promise<
                         <span className="ckind">{c.kind === "new_lexeme" ? t.contrib.kindNew : c.kind === "example" ? t.contrib.kindExample : t.contrib.kindVariant}</span>
                         <span className="clabel" dir="auto">{label}</span>
                         {c.lexeme && (
-                          <Link href={`/mot/${c.lexeme.id}`} className="clink">{c.lexeme.headword}</Link>
+                          <Link href={`/mot/${c.lexeme.slug || c.lexeme.id}`} className="clink">{c.lexeme.headword}</Link>
                         )}
                         {c.reviewNote && <span className="cnote" dir="auto">« {c.reviewNote} »</span>}
                       </li>

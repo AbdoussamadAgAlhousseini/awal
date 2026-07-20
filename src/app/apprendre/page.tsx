@@ -116,7 +116,7 @@ export default async function Learn({
                       </>
                     )}
                     {card.lexeme.ipa && <div className="rp-ipa" dir="ltr">{card.lexeme.ipa}</div>}
-                    <Link href={`/mot/${card.lexeme.id}`} className="rp-link">
+                    <Link href={`/mot/${card.lexeme.slug || card.lexeme.id}`} className="rp-link">
                       {t.enc.readMore} →
                     </Link>
                   </div>
