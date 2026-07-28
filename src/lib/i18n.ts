@@ -38,7 +38,7 @@ type Messages = {
   footerProverb: string;
   footerNote: string;
   approximateHint: string;
-  nav: { learn: string; atlas: string; enc: string; lib: string; contribute: string; moderation: string; account: string };
+  nav: { learn: string; atlas: string; enc: string; lib: string; contribute: string; moderation: string; admin: string; account: string };
   acc: {
     title: string; intro: string; pseudonym: string; pseudonymPh: string;
     modCode: string; modCodeHint: string; signIn: string; signOut: string;
@@ -77,6 +77,14 @@ type Messages = {
     inArticles: string; all: string; empty: string;
   };
   cite: { permalink: string; stable: string };
+  admin: {
+    title: string; intro: string; denied: string;
+    entries: string; articles: string; documents: string; pending: string; areas: string;
+    manageLexemes: string; viewJournal: string;
+    edit: string; save: string; saved: string; del: string; delHint: string; slugFixed: string; defLong: string;
+    journalTitle: string; journalEmpty: string; colEntity: string; colAction: string; colWhen: string;
+    actionCreate: string; actionUpdate: string; actionDelete: string;
+  };
   apiNav: string;
   authx: {
     signInWith: string; prototypeTitle: string; prototypeWarn: string;
@@ -126,7 +134,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "l'eau, c'est l'âme. Une langue aussi.",
     footerNote: "Prototype de recherche · contenu lexical d'exemple à valider.",
     approximateHint: "Aucune correspondance exacte — voici des résultats phonétiquement proches.",
-    nav: { learn: "Apprendre", atlas: "Atlas", enc: "Encyclopédie", lib: "Bibliothèque", contribute: "Contribuer", moderation: "Modération", account: "Compte" },
+    nav: { learn: "Apprendre", atlas: "Atlas", enc: "Encyclopédie", lib: "Bibliothèque", contribute: "Contribuer", moderation: "Modération", admin: "Admin", account: "Compte" },
     acc: {
       title: "Votre compte",
       intro: "Identité pseudonyme, sans mot de passe — prototype. L'authentification complète (OAuth2/OIDC, MFA) est prévue en v1.0.",
@@ -193,6 +201,19 @@ export const messages: Record<Locale, Messages> = {
       verified: "identité vérifiée", unverified: "non vérifiée",
       notConfigured: "Authentification réelle prête, en attente d'identifiants — voir .env.example.",
     },
+    admin: {
+      title: "Administration",
+      intro: "Espace valideur : éditer les entrées et consulter le journal d'audit. Toute modification est enregistrée.",
+      denied: "Accès réservé aux valideurs.",
+      entries: "entrées", articles: "fiches", documents: "documents", pending: "en attente", areas: "aires",
+      manageLexemes: "Gérer les entrées", viewJournal: "Journal d'audit",
+      edit: "Modifier", save: "Enregistrer", saved: "Modifications enregistrées.", del: "Supprimer",
+      delHint: "Suppression définitive (journalisée).",
+      slugFixed: "Le lien permanent reste inchangé (identifiant stable §8).", defLong: "Définition détaillée",
+      journalTitle: "Journal d'audit", journalEmpty: "Aucune écriture enregistrée.",
+      colEntity: "Objet", colAction: "Action", colWhen: "Date",
+      actionCreate: "création", actionUpdate: "modification", actionDelete: "suppression",
+    },
     cite: { permalink: "Lien permanent", stable: "Cette adresse est stable : elle est dérivée de la forme vedette, pas d'un identifiant technique." },
     conj: {
       title: "Conjugaison", aspect: "Aspect", person: "Personne", stem: "radical",
@@ -248,7 +269,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "water is the soul. So is a language.",
     footerNote: "Research prototype · sample lexical content, to be validated.",
     approximateHint: "No exact match — here are phonetically close results.",
-    nav: { learn: "Learn", atlas: "Atlas", enc: "Encyclopedia", lib: "Library", contribute: "Contribute", moderation: "Moderation", account: "Account" },
+    nav: { learn: "Learn", atlas: "Atlas", enc: "Encyclopedia", lib: "Library", contribute: "Contribute", moderation: "Moderation", admin: "Admin", account: "Account" },
     acc: {
       title: "Your account",
       intro: "Pseudonymous identity, no password — prototype. Full authentication (OAuth2/OIDC, MFA) is planned for v1.0.",
@@ -315,6 +336,19 @@ export const messages: Record<Locale, Messages> = {
       verified: "verified identity", unverified: "unverified",
       notConfigured: "Real authentication is wired up, awaiting credentials — see .env.example.",
     },
+    admin: {
+      title: "Administration",
+      intro: "Reviewer area: edit entries and view the audit log. Every change is recorded.",
+      denied: "Reviewers only.",
+      entries: "entries", articles: "articles", documents: "documents", pending: "pending", areas: "areas",
+      manageLexemes: "Manage entries", viewJournal: "Audit log",
+      edit: "Edit", save: "Save", saved: "Changes saved.", del: "Delete",
+      delHint: "Permanent deletion (logged).",
+      slugFixed: "The permalink stays unchanged (stable identifier §8).", defLong: "Detailed definition",
+      journalTitle: "Audit log", journalEmpty: "No writes recorded.",
+      colEntity: "Object", colAction: "Action", colWhen: "Date",
+      actionCreate: "create", actionUpdate: "update", actionDelete: "delete",
+    },
     cite: { permalink: "Permalink", stable: "This address is stable: it derives from the headword, not from a technical identifier." },
     conj: {
       title: "Conjugation", aspect: "Aspect", person: "Person", stem: "stem",
@@ -370,7 +404,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "الماء هو الروح. واللغة كذلك.",
     footerNote: "نموذج بحثي · محتوى معجمي نموذجي، قيد التحقق.",
     approximateHint: "لا توجد مطابقة تامة — إليك نتائج قريبة صوتياً.",
-    nav: { learn: "التعلّم", atlas: "الأطلس", enc: "الموسوعة", lib: "المكتبة", contribute: "المساهمة", moderation: "المراجعة", account: "الحساب" },
+    nav: { learn: "التعلّم", atlas: "الأطلس", enc: "الموسوعة", lib: "المكتبة", contribute: "المساهمة", moderation: "المراجعة", admin: "الإدارة", account: "الحساب" },
     acc: {
       title: "حسابك",
       intro: "هوية باسم مستعار، بدون كلمة مرور — نموذج أولي. المصادقة الكاملة (OAuth2/OIDC) مقررة في الإصدار 1.0.",
@@ -436,6 +470,19 @@ export const messages: Record<Locale, Messages> = {
       prototypeWarn: "لا يوجد مزوّد هوية مُهيَّأ: هذا الاسم المستعار لا يُوثِّق أحداً ويمكن لأي شخص ادّعاؤه. لا تنشره علناً بهذه الحالة.",
       verified: "هوية موثّقة", unverified: "غير موثّقة",
       notConfigured: "المصادقة الحقيقية جاهزة وتنتظر بيانات الاعتماد — راجع .env.example.",
+    },
+    admin: {
+      title: "الإدارة",
+      intro: "مساحة المراجع: تحرير المداخل والاطّلاع على سجل التدقيق. كل تعديل يُسجَّل.",
+      denied: "مخصص للمراجعين.",
+      entries: "مداخل", articles: "بطاقات", documents: "وثائق", pending: "معلّق", areas: "مناطق",
+      manageLexemes: "إدارة المداخل", viewJournal: "سجل التدقيق",
+      edit: "تعديل", save: "حفظ", saved: "حُفظت التعديلات.", del: "حذف",
+      delHint: "حذف نهائي (مُسجَّل).",
+      slugFixed: "الرابط الدائم يبقى دون تغيير (معرّف ثابت §8).", defLong: "تعريف مفصّل",
+      journalTitle: "سجل التدقيق", journalEmpty: "لا توجد كتابات مسجّلة.",
+      colEntity: "الكائن", colAction: "الإجراء", colWhen: "التاريخ",
+      actionCreate: "إنشاء", actionUpdate: "تعديل", actionDelete: "حذف",
     },
     cite: { permalink: "رابط دائم", stable: "هذا العنوان ثابت: مشتق من الكلمة المدخلة لا من معرّف تقني." },
     conj: {
