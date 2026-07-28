@@ -88,6 +88,7 @@ export const ARTICLES = [
     slug: "tagelmust",
     title: "Le tagelmust",
     category: "habitat",
+    lexemeHeadwords: ["tagelmust"],
     summary:
       "Le voile-turban masculin teint à l'indigo, pièce vestimentaire la plus emblématique de la société touarègue.",
     body: `Le tagelmust est une longue pièce d'étoffe enroulée autour de la tête et du bas du visage, portée par les hommes touaregs à partir de l'âge adulte. Il combine une fonction pratique — protection contre le soleil, le vent de sable et l'air sec du désert — et une fonction sociale forte : la manière de le porter, de le remonter ou de l'abaisser participe des codes de réserve et de respect.
@@ -102,6 +103,7 @@ Le vêtement n'est pas un simple ornement : il inscrit visuellement l'appartenan
     slug: "imzad",
     title: "L'imzad",
     category: "musique",
+    lexemeHeadwords: ["imẓad"],
     summary:
       "Vièle monocorde jouée par les femmes, inscrite au patrimoine culturel immatériel de l'humanité en 2013.",
     body: `L'imzad est un instrument à corde unique, dont la caisse est traditionnellement constituée d'une demi-calebasse recouverte d'une peau tendue, et que l'on joue avec un archet courbe. Sa pratique est féminine.
@@ -116,6 +118,7 @@ Les pratiques et savoirs liés à l'imzad des communautés touarègues d'Algéri
     slug: "tifinagh",
     title: "L'écriture tifinagh",
     category: "histoire",
+    lexemeHeadwords: ["tifinaɣ"],
     summary:
       "Système d'écriture alphabétique propre aux langues amazighes, dont l'usage touareg est le plus continu.",
     body: `Le tifinagh est une écriture consonantique d'origine ancienne, apparentée aux alphabets libyques attestés par l'épigraphie nord-africaine. Chez les Touaregs, son usage s'est maintenu de façon continue, notamment pour des inscriptions sur roche, des messages courts et des marques de propriété.
@@ -130,6 +133,7 @@ Le tracé est géométrique — points, traits, cercles — ce qui le rend adapt
     slug: "pastoralisme",
     title: "Pastoralisme et savoirs du désert",
     category: "pastoralisme",
+    lexemeHeadwords: ["taɣaṭ", "aləm", "afunas", "tagəlla"],
     summary:
       "L'élevage mobile structure le calendrier, le vocabulaire et la connaissance fine du milieu saharo-sahélien.",
     body: `L'économie pastorale repose sur la mobilité des troupeaux — dromadaires, chèvres, moutons, bovins selon les zones — en fonction de la disponibilité de l'eau et des pâturages. Cette mobilité n'est pas errance : elle suit des itinéraires, des points d'eau et des droits d'usage connus et négociés.

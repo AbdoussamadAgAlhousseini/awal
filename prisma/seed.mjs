@@ -7,6 +7,7 @@ import { phoneticKey } from "../src/lib/phonetics.mjs";
 import { areaGeoJSON } from "../src/lib/geo.mjs";
 import { slugify, uniqueSlug } from "../src/lib/slug.mjs";
 import { ARTICLES, DOCUMENTS } from "./seed-corpus.mjs";
+import { EXTRA_LEXEMES } from "./seed-lexemes.mjs";
 const db = new PrismaClient();
 
 const AREAS = [
@@ -167,7 +168,7 @@ async function main() {
   const source = await db.source.create({ data: SOURCE });
 
   const takenSlugs = new Set();
-  for (const lx of LEXEMES) {
+  for (const lx of [...LEXEMES, ...EXTRA_LEXEMES]) {
     const root = lx.root
       ? await db.root.upsert({ where: { radicals: lx.root }, update: {}, create: { radicals: lx.root } })
       : null;
@@ -235,9 +236,11 @@ async function main() {
 
   // Encyclopédie culturelle (§9)
   for (const a of ARTICLES) {
-    const { lexemes = [], documents = [], ...data } = a;
+    // `lexemeHeadwords` et `documents` sont des liaisons, pas des colonnes : on les
+    // retire de `data` avant la création (sinon Prisma rejette des champs inconnus).
+    const { lexemes = [], lexemeHeadwords = [], documents = [], ...data } = a;
     const article = await db.article.create({ data });
-    for (const hw of lexemes) {
+    for (const hw of [...lexemes, ...lexemeHeadwords]) {
       const lx = await db.lexeme.findFirst({ where: { headword: hw } });
       if (lx) await db.articleLexeme.create({ data: { articleId: article.id, lexemeId: lx.id } });
     }

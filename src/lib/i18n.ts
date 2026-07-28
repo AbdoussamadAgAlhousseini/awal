@@ -474,6 +474,7 @@ const POS: Record<string, Record<Locale, string>> = {
   adjectif: { fr: "adjectif", en: "adjective", ar: "صفة" },
   adverbe: { fr: "adverbe", en: "adverb", ar: "ظرف" },
   pronom: { fr: "pronom", en: "pronoun", ar: "ضمير" },
+  "numéral": { fr: "numéral", en: "numeral", ar: "عدد" },
   "nom propre": { fr: "nom propre", en: "proper noun", ar: "اسم عَلَم" },
 };
 
