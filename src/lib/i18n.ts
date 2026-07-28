@@ -38,7 +38,7 @@ type Messages = {
   footerProverb: string;
   footerNote: string;
   approximateHint: string;
-  nav: { learn: string; atlas: string; enc: string; lib: string; contribute: string; moderation: string; admin: string; account: string };
+  nav: { learn: string; atlas: string; enc: string; lib: string; contribute: string; moderation: string; admin: string; dash: string; account: string };
   acc: {
     title: string; intro: string; pseudonym: string; pseudonymPh: string;
     modCode: string; modCodeHint: string; signIn: string; signOut: string;
@@ -86,6 +86,17 @@ type Messages = {
     actionCreate: string; actionUpdate: string; actionDelete: string;
   };
   apiNav: string;
+  dash: {
+    title: string; intro: string;
+    coverage: string; totalEntries: string; byCategory: string; avgSenses: string;
+    completeness: string; completenessNote: string;
+    cTifinagh: string; cIpa: string; cTranslation: string; cExample: string; cAudio: string;
+    community: string; contributors: string; activeContributors: string;
+    contributions: string; pending: string; approved: string; rejected: string;
+    medianReview: string; noReview: string; hours: string;
+    vitality: string; vitalityNote: string; documented: string; coverageCol: string; audioCol: string; indexCol: string;
+    usage: string; usageNote: string;
+  };
   authx: {
     signInWith: string; prototypeTitle: string; prototypeWarn: string;
     verified: string; unverified: string; notConfigured: string;
@@ -134,7 +145,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "l'eau, c'est l'âme. Une langue aussi.",
     footerNote: "Prototype de recherche · contenu lexical d'exemple à valider.",
     approximateHint: "Aucune correspondance exacte — voici des résultats phonétiquement proches.",
-    nav: { learn: "Apprendre", atlas: "Atlas", enc: "Encyclopédie", lib: "Bibliothèque", contribute: "Contribuer", moderation: "Modération", admin: "Admin", account: "Compte" },
+    nav: { learn: "Apprendre", atlas: "Atlas", enc: "Encyclopédie", lib: "Bibliothèque", contribute: "Contribuer", moderation: "Modération", admin: "Admin", dash: "Tableau de bord", account: "Compte" },
     acc: {
       title: "Votre compte",
       intro: "Identité pseudonyme, sans mot de passe — prototype. L'authentification complète (OAuth2/OIDC, MFA) est prévue en v1.0.",
@@ -200,6 +211,18 @@ export const messages: Record<Locale, Messages> = {
       prototypeWarn: "Aucun fournisseur d'identité n'est configuré : ce pseudonyme n'authentifie personne et n'importe qui peut le réclamer. À ne pas exposer publiquement en l'état.",
       verified: "identité vérifiée", unverified: "non vérifiée",
       notConfigured: "Authentification réelle prête, en attente d'identifiants — voir .env.example.",
+    },
+    dash: {
+      title: "Santé de la langue", intro: "Indicateurs de couverture et de documentation du lexique. Données réelles, contenu à valider.",
+      coverage: "Couverture", totalEntries: "entrées au total", byCategory: "Par catégorie", avgSenses: "sens par entrée (moyenne)",
+      completeness: "Complétude des entrées", completenessNote: "Part des entrées possédant chaque élément.",
+      cTifinagh: "Tifinagh", cIpa: "Prononciation (IPA)", cTranslation: "Traduction", cExample: "Exemple d'usage", cAudio: "Enregistrement audio",
+      community: "Communauté", contributors: "comptes", activeContributors: "contributeurs actifs",
+      contributions: "contributions", pending: "en attente", approved: "approuvées", rejected: "refusées",
+      medianReview: "Délai médian de validation", noReview: "aucune validation encore", hours: "h",
+      vitality: "Indice de couverture documentaire par aire", vitalityNote: "Mesure à quel point chaque aire est DOCUMENTÉE sur la plateforme — non la vitalité réelle du parler, qui dépend des locuteurs et de la transmission.", documented: "documentées",
+      coverageCol: "Couverture", audioCol: "Audio", indexCol: "Indice",
+      usage: "Usage", usageNote: "Recherches, mots consultés, apprenants actifs : non instrumentés. Par respect de la vie privée (§25), rien n'est mesuré tant qu'un dispositif d'analyse anonyme et transparent n'a pas été mis en place. Ces chiffres ne sont pas inventés.",
     },
     admin: {
       title: "Administration",
@@ -269,7 +292,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "water is the soul. So is a language.",
     footerNote: "Research prototype · sample lexical content, to be validated.",
     approximateHint: "No exact match — here are phonetically close results.",
-    nav: { learn: "Learn", atlas: "Atlas", enc: "Encyclopedia", lib: "Library", contribute: "Contribute", moderation: "Moderation", admin: "Admin", account: "Account" },
+    nav: { learn: "Learn", atlas: "Atlas", enc: "Encyclopedia", lib: "Library", contribute: "Contribute", moderation: "Moderation", admin: "Admin", dash: "Dashboard", account: "Account" },
     acc: {
       title: "Your account",
       intro: "Pseudonymous identity, no password — prototype. Full authentication (OAuth2/OIDC, MFA) is planned for v1.0.",
@@ -335,6 +358,18 @@ export const messages: Record<Locale, Messages> = {
       prototypeWarn: "No identity provider is configured: this pseudonym authenticates nobody and anyone can claim it. Do not expose it publicly as is.",
       verified: "verified identity", unverified: "unverified",
       notConfigured: "Real authentication is wired up, awaiting credentials — see .env.example.",
+    },
+    dash: {
+      title: "Language health", intro: "Coverage and documentation indicators for the lexicon. Real data; content to be validated.",
+      coverage: "Coverage", totalEntries: "total entries", byCategory: "By part of speech", avgSenses: "senses per entry (average)",
+      completeness: "Entry completeness", completenessNote: "Share of entries that have each element.",
+      cTifinagh: "Tifinagh", cIpa: "Pronunciation (IPA)", cTranslation: "Translation", cExample: "Usage example", cAudio: "Audio recording",
+      community: "Community", contributors: "accounts", activeContributors: "active contributors",
+      contributions: "contributions", pending: "pending", approved: "approved", rejected: "rejected",
+      medianReview: "Median review time", noReview: "no review yet", hours: "h",
+      vitality: "Documentation coverage index by area", vitalityNote: "Measures how well each area is DOCUMENTED on the platform — not the real vitality of the variety, which depends on speakers and transmission.", documented: "documented",
+      coverageCol: "Coverage", audioCol: "Audio", indexCol: "Index",
+      usage: "Usage", usageNote: "Searches, viewed words, active learners: not instrumented. Out of privacy respect (§25), nothing is measured until an anonymous, transparent analytics scheme is in place. These figures are not fabricated.",
     },
     admin: {
       title: "Administration",
@@ -404,7 +439,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "الماء هو الروح. واللغة كذلك.",
     footerNote: "نموذج بحثي · محتوى معجمي نموذجي، قيد التحقق.",
     approximateHint: "لا توجد مطابقة تامة — إليك نتائج قريبة صوتياً.",
-    nav: { learn: "التعلّم", atlas: "الأطلس", enc: "الموسوعة", lib: "المكتبة", contribute: "المساهمة", moderation: "المراجعة", admin: "الإدارة", account: "الحساب" },
+    nav: { learn: "التعلّم", atlas: "الأطلس", enc: "الموسوعة", lib: "المكتبة", contribute: "المساهمة", moderation: "المراجعة", admin: "الإدارة", dash: "لوحة القيادة", account: "الحساب" },
     acc: {
       title: "حسابك",
       intro: "هوية باسم مستعار، بدون كلمة مرور — نموذج أولي. المصادقة الكاملة (OAuth2/OIDC) مقررة في الإصدار 1.0.",
@@ -470,6 +505,18 @@ export const messages: Record<Locale, Messages> = {
       prototypeWarn: "لا يوجد مزوّد هوية مُهيَّأ: هذا الاسم المستعار لا يُوثِّق أحداً ويمكن لأي شخص ادّعاؤه. لا تنشره علناً بهذه الحالة.",
       verified: "هوية موثّقة", unverified: "غير موثّقة",
       notConfigured: "المصادقة الحقيقية جاهزة وتنتظر بيانات الاعتماد — راجع .env.example.",
+    },
+    dash: {
+      title: "صحة اللغة", intro: "مؤشرات تغطية المعجم وتوثيقه. بيانات حقيقية؛ المحتوى قيد التحقق.",
+      coverage: "التغطية", totalEntries: "مدخلاً إجمالاً", byCategory: "حسب القسم النحوي", avgSenses: "معنى لكل مدخل (متوسط)",
+      completeness: "اكتمال المداخل", completenessNote: "نسبة المداخل التي تملك كل عنصر.",
+      cTifinagh: "تيفيناغ", cIpa: "النطق (IPA)", cTranslation: "الترجمة", cExample: "مثال استعمال", cAudio: "تسجيل صوتي",
+      community: "المجتمع", contributors: "حسابات", activeContributors: "مساهمون نشطون",
+      contributions: "مساهمات", pending: "معلّقة", approved: "مقبولة", rejected: "مرفوضة",
+      medianReview: "الزمن الوسيط للمراجعة", noReview: "لا مراجعة بعد", hours: "س",
+      vitality: "مؤشر التغطية التوثيقية حسب المنطقة", vitalityNote: "يقيس مدى توثيق كل منطقة على المنصة — لا الحيوية الفعلية للهجة، التي تعتمد على المتحدثين والنقل بين الأجيال.", documented: "موثّقة",
+      coverageCol: "التغطية", audioCol: "صوت", indexCol: "المؤشر",
+      usage: "الاستخدام", usageNote: "عمليات البحث والكلمات المُطالَعة والمتعلمون النشطون: غير مُقاسة. احتراماً للخصوصية (§25)، لا يُقاس شيء قبل إرساء نظام تحليل مجهول وشفاف. هذه الأرقام ليست مُختلقة.",
     },
     admin: {
       title: "الإدارة",
