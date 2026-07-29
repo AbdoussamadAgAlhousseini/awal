@@ -202,6 +202,25 @@ entrée produit **33 triplets** et le lexique complet **275**, avec des prédica
 vers les IRI canoniques de ces vocabulaires. Le tamasheq est étiqueté `tmh` (ISO 639-3),
 sa graphie tifinagh `tmh-Tfng`. Licence **CC BY-SA 4.0**, citation par slug.
 
+### Tests & qualité (§28)
+
+Suite de tests unitaires (**Vitest**) sur les moteurs purs — c'est là que vivent les
+règles subtiles et les bugs déjà corrigés :
+
+```bash
+npm test          # exécution unique
+npm run test:watch
+```
+
+**35 tests / 6 fichiers**, couvrant : l'ordonnancement SRS (progression 1→6→15 j, plancher
+d'ease, réinitialisation), la clé phonétique (`amghar≡amgar`, `awal≡aoual≡ⴰⵡⴰⵍ`), le
+conjugueur (**la règle `i-→y-` de régression**, aspects non documentés jamais inventés), les
+slugs stables (déterminisme, désambiguïsation), la projection de l'atlas et le GeoJSON, et
+le Linked Data (structure Ontolex, forme tifinagh `tmh-Tfng`, gloses multilingues).
+
+Une **CI GitHub Actions** (`.github/workflows/ci.yml`) lance à chaque push et PR :
+`prisma generate` → typecheck (`tsc --noEmit`) → tests. C'est la porte de qualité du §28.
+
 ## Modèle de données
 
 Voir [`prisma/schema.prisma`](prisma/schema.prisma) : `Lexeme`, `Sense`, `Example`, `Root`,
