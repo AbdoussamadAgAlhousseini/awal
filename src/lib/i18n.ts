@@ -38,7 +38,7 @@ type Messages = {
   footerProverb: string;
   footerNote: string;
   approximateHint: string;
-  nav: { learn: string; atlas: string; enc: string; lib: string; contribute: string; moderation: string; admin: string; dash: string; account: string };
+  nav: { learn: string; atlas: string; enc: string; lib: string; contribute: string; moderation: string; admin: string; dash: string; quiz: string; account: string };
   acc: {
     title: string; intro: string; pseudonym: string; pseudonymPh: string;
     modCode: string; modCodeHint: string; signIn: string; signOut: string;
@@ -86,6 +86,12 @@ type Messages = {
     actionCreate: string; actionUpdate: string; actionDelete: string;
   };
   apiNav: string;
+  quiz: {
+    title: string; intro: string; questionOf: string;
+    score: string; qMeaning: string; qWord: string; qScript: string;
+    correct: string; wrong: string; next: string; finish: string;
+    finalScore: string; replay: string; tooFew: string;
+  };
   dash: {
     title: string; intro: string;
     coverage: string; totalEntries: string; byCategory: string; avgSenses: string;
@@ -145,7 +151,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "l'eau, c'est l'âme. Une langue aussi.",
     footerNote: "Prototype de recherche · contenu lexical d'exemple à valider.",
     approximateHint: "Aucune correspondance exacte — voici des résultats phonétiquement proches.",
-    nav: { learn: "Apprendre", atlas: "Atlas", enc: "Encyclopédie", lib: "Bibliothèque", contribute: "Contribuer", moderation: "Modération", admin: "Admin", dash: "Tableau de bord", account: "Compte" },
+    nav: { learn: "Apprendre", atlas: "Atlas", enc: "Encyclopédie", lib: "Bibliothèque", contribute: "Contribuer", moderation: "Modération", admin: "Admin", dash: "Tableau de bord", quiz: "Jouer", account: "Compte" },
     acc: {
       title: "Votre compte",
       intro: "Identité pseudonyme, sans mot de passe — prototype. L'authentification complète (OAuth2/OIDC, MFA) est prévue en v1.0.",
@@ -224,6 +230,13 @@ export const messages: Record<Locale, Messages> = {
       coverageCol: "Couverture", audioCol: "Audio", indexCol: "Indice",
       usage: "Usage", usageNote: "Recherches, mots consultés, apprenants actifs : non instrumentés. Par respect de la vie privée (§25), rien n'est mesuré tant qu'un dispositif d'analyse anonyme et transparent n'a pas été mis en place. Ces chiffres ne sont pas inventés.",
     },
+    quiz: {
+      title: "Jouer", intro: "Quiz éclair pour réviser le vocabulaire. Contenu à valider.",
+      questionOf: "Question {i} / {n}",
+      score: "Score", qMeaning: "Que signifie ce mot ?", qWord: "Quel mot correspond ?", qScript: "Quelle est sa lecture ?",
+      correct: "Correct !", wrong: "Pas tout à fait", next: "Suivant", finish: "Terminer",
+      finalScore: "{score} / {total} bonnes réponses", replay: "Rejouer", tooFew: "Pas encore assez d'entrées pour un quiz.",
+    },
     admin: {
       title: "Administration",
       intro: "Espace valideur : éditer les entrées et consulter le journal d'audit. Toute modification est enregistrée.",
@@ -292,7 +305,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "water is the soul. So is a language.",
     footerNote: "Research prototype · sample lexical content, to be validated.",
     approximateHint: "No exact match — here are phonetically close results.",
-    nav: { learn: "Learn", atlas: "Atlas", enc: "Encyclopedia", lib: "Library", contribute: "Contribute", moderation: "Moderation", admin: "Admin", dash: "Dashboard", account: "Account" },
+    nav: { learn: "Learn", atlas: "Atlas", enc: "Encyclopedia", lib: "Library", contribute: "Contribute", moderation: "Moderation", admin: "Admin", dash: "Dashboard", quiz: "Play", account: "Account" },
     acc: {
       title: "Your account",
       intro: "Pseudonymous identity, no password — prototype. Full authentication (OAuth2/OIDC, MFA) is planned for v1.0.",
@@ -371,6 +384,13 @@ export const messages: Record<Locale, Messages> = {
       coverageCol: "Coverage", audioCol: "Audio", indexCol: "Index",
       usage: "Usage", usageNote: "Searches, viewed words, active learners: not instrumented. Out of privacy respect (§25), nothing is measured until an anonymous, transparent analytics scheme is in place. These figures are not fabricated.",
     },
+    quiz: {
+      title: "Play", intro: "A quick quiz to review vocabulary. Content to be validated.",
+      questionOf: "Question {i} / {n}",
+      score: "Score", qMeaning: "What does this word mean?", qWord: "Which word matches?", qScript: "How is it read?",
+      correct: "Correct!", wrong: "Not quite", next: "Next", finish: "Finish",
+      finalScore: "{score} / {total} correct", replay: "Play again", tooFew: "Not enough entries yet for a quiz.",
+    },
     admin: {
       title: "Administration",
       intro: "Reviewer area: edit entries and view the audit log. Every change is recorded.",
@@ -439,7 +459,7 @@ export const messages: Record<Locale, Messages> = {
     footerProverb: "الماء هو الروح. واللغة كذلك.",
     footerNote: "نموذج بحثي · محتوى معجمي نموذجي، قيد التحقق.",
     approximateHint: "لا توجد مطابقة تامة — إليك نتائج قريبة صوتياً.",
-    nav: { learn: "التعلّم", atlas: "الأطلس", enc: "الموسوعة", lib: "المكتبة", contribute: "المساهمة", moderation: "المراجعة", admin: "الإدارة", dash: "لوحة القيادة", account: "الحساب" },
+    nav: { learn: "التعلّم", atlas: "الأطلس", enc: "الموسوعة", lib: "المكتبة", contribute: "المساهمة", moderation: "المراجعة", admin: "الإدارة", dash: "لوحة القيادة", quiz: "لعب", account: "الحساب" },
     acc: {
       title: "حسابك",
       intro: "هوية باسم مستعار، بدون كلمة مرور — نموذج أولي. المصادقة الكاملة (OAuth2/OIDC) مقررة في الإصدار 1.0.",
@@ -517,6 +537,13 @@ export const messages: Record<Locale, Messages> = {
       vitality: "مؤشر التغطية التوثيقية حسب المنطقة", vitalityNote: "يقيس مدى توثيق كل منطقة على المنصة — لا الحيوية الفعلية للهجة، التي تعتمد على المتحدثين والنقل بين الأجيال.", documented: "موثّقة",
       coverageCol: "التغطية", audioCol: "صوت", indexCol: "المؤشر",
       usage: "الاستخدام", usageNote: "عمليات البحث والكلمات المُطالَعة والمتعلمون النشطون: غير مُقاسة. احتراماً للخصوصية (§25)، لا يُقاس شيء قبل إرساء نظام تحليل مجهول وشفاف. هذه الأرقام ليست مُختلقة.",
+    },
+    quiz: {
+      title: "لعب", intro: "اختبار سريع لمراجعة المفردات. المحتوى قيد التحقق.",
+      questionOf: "سؤال {i} / {n}",
+      score: "النتيجة", qMeaning: "ما معنى هذه الكلمة؟", qWord: "أي كلمة تطابق؟", qScript: "كيف تُقرأ؟",
+      correct: "صحيح!", wrong: "ليس تماماً", next: "التالي", finish: "إنهاء",
+      finalScore: "{score} / {total} إجابة صحيحة", replay: "إعادة اللعب", tooFew: "لا توجد مداخل كافية بعد لإجراء اختبار.",
     },
     admin: {
       title: "الإدارة",

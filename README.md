@@ -202,6 +202,18 @@ entrée produit **33 triplets** et le lexique complet **275**, avec des prédica
 vers les IRI canoniques de ces vocabulaires. Le tamasheq est étiqueté `tmh` (ISO 639-3),
 sa graphie tifinagh `tmh-Tfng`. Licence **CC BY-SA 4.0**, citation par slug.
 
+### Quiz & jeux (§17)
+
+Page publique `/jouer` (aucune connexion requise) : un quiz éclair à choix multiples
+généré depuis le lexique, avec trois types de questions — **sens** (tamasheq → glose),
+**mot** (glose → tamasheq) et **lecture** (tifinagh → latin). Retour immédiat (bonne
+réponse surlignée), score de session, et rejeu qui régénère de nouvelles questions.
+
+Le générateur ([`src/lib/quiz.ts`](src/lib/quiz.ts)) est une fonction pure et testée
+(4 options distinctes dont une correcte, variété des types, quiz vide si < 4 entrées).
+Le composant est interactif côté client — aucun aller-retour serveur par réponse, aucun
+état persisté (pas de faux classement).
+
 ### Tests & qualité (§28)
 
 Suite de tests unitaires (**Vitest**) sur les moteurs purs — c'est là que vivent les
