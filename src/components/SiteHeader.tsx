@@ -2,10 +2,31 @@ import Link from "next/link";
 import { setLocale } from "@/app/actions";
 import { messages, type Locale } from "@/lib/i18n";
 import { getCurrentUser, isModerator } from "@/lib/session";
+import NavMenu, { type NavLink } from "@/components/NavMenu";
 
 export default async function SiteHeader({ locale, next }: { locale: Locale; next: string }) {
   const t = messages[locale];
   const user = await getCurrentUser();
+
+  // Liste calculée côté serveur (dont les entrées réservées aux valideurs), passée
+  // au menu responsive.
+  const links: NavLink[] = [
+    { href: "/apprendre", label: t.nav.learn },
+    { href: "/jouer", label: t.nav.quiz },
+    { href: "/encyclopedie", label: t.nav.enc },
+    { href: "/bibliotheque", label: t.nav.lib },
+    { href: "/atlas", label: t.nav.atlas },
+    { href: "/tableau", label: t.nav.dash },
+    { href: "/api-doc", label: t.apiNav },
+    { href: "/contribuer", label: t.nav.contribute },
+    ...(isModerator(user)
+      ? [
+          { href: "/moderation", label: t.nav.moderation },
+          { href: "/admin", label: t.nav.admin },
+        ]
+      : []),
+    { href: "/compte", label: user ? user.pseudonym : t.nav.account },
+  ];
 
   return (
     <header className="site-header">
@@ -16,21 +37,7 @@ export default async function SiteHeader({ locale, next }: { locale: Locale; nex
           <span className="s">{t.subtitle}</span>
         </Link>
 
-        <nav className="mainnav">
-          <Link href="/apprendre">{t.nav.learn}</Link>
-          <Link href="/jouer">{t.nav.quiz}</Link>
-          <Link href="/encyclopedie">{t.nav.enc}</Link>
-          <Link href="/bibliotheque">{t.nav.lib}</Link>
-          <Link href="/atlas">{t.nav.atlas}</Link>
-          <Link href="/tableau">{t.nav.dash}</Link>
-          <Link href="/api-doc">{t.apiNav}</Link>
-          <Link href="/contribuer">{t.nav.contribute}</Link>
-          {isModerator(user) && <Link href="/moderation">{t.nav.moderation}</Link>}
-          {isModerator(user) && <Link href="/admin">{t.nav.admin}</Link>}
-          <Link href="/compte">
-            {user ? user.pseudonym : t.nav.account}
-          </Link>
-        </nav>
+        <NavMenu links={links} menuLabel={t.nav.menu} />
 
         <form action={setLocale} className="langswitch" aria-label={t.langLabel}>
           <input type="hidden" name="next" value={next} />
