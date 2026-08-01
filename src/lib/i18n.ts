@@ -84,6 +84,11 @@ type Messages = {
     edit: string; save: string; saved: string; del: string; delHint: string; slugFixed: string; defLong: string;
     journalTitle: string; journalEmpty: string; colEntity: string; colAction: string; colWhen: string;
     actionCreate: string; actionUpdate: string; actionDelete: string;
+    manageArticles: string; manageDocuments: string; newItem: string; created: string;
+    fTitle: string; fSummary: string; fBody: string; fCategory: string; fStatus: string;
+    fDescription: string; fUrl: string; fRightsNote: string;
+    fSensitivity: string; sensPublic: string; sensRestricted: string; fRestrictionNote: string;
+    statusDraft: string; statusReview: string; statusPublished: string; statusArchived: string;
   };
   apiNav: string;
   quiz: {
@@ -256,6 +261,11 @@ export const messages: Record<Locale, Messages> = {
       journalTitle: "Journal d'audit", journalEmpty: "Aucune écriture enregistrée.",
       colEntity: "Objet", colAction: "Action", colWhen: "Date",
       actionCreate: "création", actionUpdate: "modification", actionDelete: "suppression",
+      manageArticles: "Encyclopédie", manageDocuments: "Bibliothèque", newItem: "Nouveau", created: "Créé.",
+      fTitle: "Titre", fSummary: "Résumé", fBody: "Contenu", fCategory: "Catégorie", fStatus: "Statut",
+      fDescription: "Description", fUrl: "URL", fRightsNote: "Note sur les droits",
+      fSensitivity: "Accès", sensPublic: "Public", sensRestricted: "Restreint (CARE)", fRestrictionNote: "Motif de restriction",
+      statusDraft: "brouillon", statusReview: "en revue", statusPublished: "publié", statusArchived: "archivé",
     },
     cite: { permalink: "Lien permanent", stable: "Cette adresse est stable : elle est dérivée de la forme vedette, pas d'un identifiant technique." },
     conj: {
@@ -415,6 +425,11 @@ export const messages: Record<Locale, Messages> = {
       journalTitle: "Audit log", journalEmpty: "No writes recorded.",
       colEntity: "Object", colAction: "Action", colWhen: "Date",
       actionCreate: "create", actionUpdate: "update", actionDelete: "delete",
+      manageArticles: "Encyclopedia", manageDocuments: "Library", newItem: "New", created: "Created.",
+      fTitle: "Title", fSummary: "Summary", fBody: "Body", fCategory: "Category", fStatus: "Status",
+      fDescription: "Description", fUrl: "URL", fRightsNote: "Rights note",
+      fSensitivity: "Access", sensPublic: "Public", sensRestricted: "Restricted (CARE)", fRestrictionNote: "Restriction reason",
+      statusDraft: "draft", statusReview: "in review", statusPublished: "published", statusArchived: "archived",
     },
     cite: { permalink: "Permalink", stable: "This address is stable: it derives from the headword, not from a technical identifier." },
     conj: {
@@ -574,6 +589,11 @@ export const messages: Record<Locale, Messages> = {
       journalTitle: "سجل التدقيق", journalEmpty: "لا توجد كتابات مسجّلة.",
       colEntity: "الكائن", colAction: "الإجراء", colWhen: "التاريخ",
       actionCreate: "إنشاء", actionUpdate: "تعديل", actionDelete: "حذف",
+      manageArticles: "الموسوعة", manageDocuments: "المكتبة", newItem: "جديد", created: "أُنشئ.",
+      fTitle: "العنوان", fSummary: "ملخّص", fBody: "المحتوى", fCategory: "التصنيف", fStatus: "الحالة",
+      fDescription: "الوصف", fUrl: "الرابط", fRightsNote: "ملاحظة الحقوق",
+      fSensitivity: "الوصول", sensPublic: "عام", sensRestricted: "مقيّد (CARE)", fRestrictionNote: "سبب التقييد",
+      statusDraft: "مسودة", statusReview: "قيد المراجعة", statusPublished: "منشور", statusArchived: "مؤرشف",
     },
     cite: { permalink: "رابط دائم", stable: "هذا العنوان ثابت: مشتق من الكلمة المدخلة لا من معرّف تقني." },
     conj: {

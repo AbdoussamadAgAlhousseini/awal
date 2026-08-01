@@ -497,3 +497,10 @@ a:hover{text-decoration:underline}
 .usage-term{font-family:var(--serif);color:var(--ink)}
 .usage-term.missing{color:var(--henna)}
 .usage-count{font-family:var(--mono);font-size:0.82rem;color:var(--gold);font-variant-numeric:tabular-nums}
+
+/* Back-office : zones de texte et en-tête de liste */
+.form textarea{background:var(--panel);border:1px solid var(--line);border-radius:9px;
+  padding:10px 13px;color:var(--ink);font-size:0.98rem;font-family:var(--sans);width:100%;
+  line-height:1.55;resize:vertical}
+.form textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.admin-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}

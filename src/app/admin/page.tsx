@@ -50,6 +50,8 @@ export default async function AdminHub() {
 
           <div className="admin-links">
             <Link href="/admin/lexemes" className="btn primary">{t.admin.manageLexemes}</Link>
+            <Link href="/admin/articles" className="btn">{t.admin.manageArticles}</Link>
+            <Link href="/admin/documents" className="btn">{t.admin.manageDocuments}</Link>
             <Link href="/admin/journal" className="btn">{t.admin.viewJournal}</Link>
             <Link href="/moderation" className="btn">{t.mod.title}</Link>
           </div>

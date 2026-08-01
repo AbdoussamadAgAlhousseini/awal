@@ -202,6 +202,19 @@ entrée produit **33 triplets** et le lexique complet **275**, avec des prédica
 vers les IRI canoniques de ces vocabulaires. Le tamasheq est étiqueté `tmh` (ISO 639-3),
 sa graphie tifinagh `tmh-Tfng`. Licence **CC BY-SA 4.0**, citation par slug.
 
+### Back-office (§19)
+
+Espace valideur `/admin` (rôle `moderator`), garde côté serveur, chaque écriture
+**journalisée** dans `Revision` (audit réversible) :
+
+- **Entrées** (`/admin/lexemes`) : édition et suppression ; le slug reste figé (§8).
+- **Encyclopédie** (`/admin/articles`) : créer / éditer / supprimer des fiches, dont le
+  champ de **sensibilité CARE** (§9) — marquer une fiche « restreinte » masque son corps
+  sur la page publique.
+- **Bibliothèque** (`/admin/documents`) : créer / éditer / supprimer des documents et leur
+  régime de droits.
+- **Journal d'audit** (`/admin/journal`) : les 100 dernières écritures.
+
 ### Tableau de bord & usage (§20)
 
 Page publique `/tableau` (« santé de la langue ») : couverture, complétude, communauté,
