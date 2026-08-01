@@ -23,7 +23,12 @@ export default async function AdminLexemes({
 
   const rows = await db.lexeme.findMany({
     where: term
-      ? { OR: [{ headword: { contains: term } }, { tifinagh: { contains: term } }] }
+      ? {
+          OR: [
+            { headword: { contains: term, mode: "insensitive" } },
+            { tifinagh: { contains: term, mode: "insensitive" } },
+          ],
+        }
       : {},
     orderBy: { headword: "asc" },
     include: { senses: { orderBy: { order: "asc" }, take: 1, select: { defShort: true } } },

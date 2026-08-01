@@ -64,13 +64,16 @@ export async function searchLexemes(rawQuery: string, limit = 40): Promise<{ hit
   };
 
   // --- Niveau 1 : lexical (en base) ---
+  // `mode: "insensitive"` : recherche insensible à la casse sous PostgreSQL
+  // (« Eau » trouve « eau »). Sous SQLite c'était le comportement par défaut.
+  const ci = "insensitive" as const;
   const lexical = (await db.lexeme.findMany({
     where: {
       OR: [
-        { headword: { contains: term } },
-        { tifinagh: { contains: term } },
-        { variants: { some: { form: { contains: term } } } },
-        { senses: { some: { OR: [{ defShort: { contains: term } }, { translations: { contains: term } }] } } },
+        { headword: { contains: term, mode: ci } },
+        { tifinagh: { contains: term, mode: ci } },
+        { variants: { some: { form: { contains: term, mode: ci } } } },
+        { senses: { some: { OR: [{ defShort: { contains: term, mode: ci } }, { translations: { contains: term, mode: ci } }] } } },
       ],
     },
     select: SELECT,

@@ -5,13 +5,14 @@
   "description": "Awal — plateforme mondiale de la langue tamasheq (MVP dictionnaire v0.1)",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "db:push": "prisma db push",
     "seed": "node prisma/seed.mjs",
     "setup": "prisma db push && node prisma/seed.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",

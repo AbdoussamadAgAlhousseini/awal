@@ -12,20 +12,25 @@ apprentissage, laboratoire linguistique et API ouverte.
 ## Stack
 
 - **Next.js 15** (App Router, React 19, Server Components & Server Actions)
-- **Prisma 6** + **SQLite** en dev — portable vers PostgreSQL (§23)
+- **Prisma 6** + **PostgreSQL** (Neon en dev comme en prod, §23)
 - Identité visuelle « nuit du désert » (indigo · sable · or ocre · tifinagh), thèmes clair & sombre
 
 ## Démarrer
 
 ```bash
 npm install
-cp .env.example .env.local     # toutes les variables sont vides par défaut
-npm run setup                  # base SQLite + données d'amorçage
+cp .env.example .env.local     # puis renseigner DATABASE_URL / DIRECT_URL (Neon)
+npm run setup                  # crée les tables + données d'amorçage
 npm run dev                    # http://localhost:3000
 ```
 
-Sans aucune variable renseignée, l'application tourne en **mode prototype**
-(identité pseudonyme). Pour activer l'authentification réelle, voir ci-dessous.
+Une base **PostgreSQL** est requise (locale ou hébergée). Le plus simple est une base
+**Neon** gratuite, utilisée en dev comme en production — pas de dérive entre les deux.
+
+**Mise en ligne** : voir **[DEPLOY.md](DEPLOY.md)** (Vercel + Neon, pas-à-pas).
+
+Sans fournisseur OAuth configuré, l'application tourne en **mode prototype**
+(identité pseudonyme). Pour activer l'authentification réelle, voir DEPLOY.md.
 
 ## Fonctionnalités
 

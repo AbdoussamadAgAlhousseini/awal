@@ -1,13 +1,14 @@
-// Awal — modèle de données (MVP dictionnaire v0.1)
-// Aligné sur §21 du dossier de conception. SQLite en dev, portable vers PostgreSQL.
+// Awal — modèle de données (§21 du dossier de conception).
+// PostgreSQL (Neon en production comme en dev — plus de dérive entre les deux).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // connexion applicative (poolée chez Neon)
+  directUrl = env("DIRECT_URL")   // connexion directe pour les migrations / db push
 }
 
 /// Aire dialectale (Mali, Niger, Algérie, Libye, Burkina Faso)
