@@ -469,3 +469,13 @@ a:hover{text-decoration:underline}
 .quiz-done{text-align:center;padding:34px 0;display:flex;flex-direction:column;align-items:center;gap:12px}
 .quiz-score-big{font-family:var(--serif);font-size:3.4rem;color:var(--gold);line-height:1}
 .quiz-slash{color:var(--ink-faint);font-size:2rem}
+
+/* Analytique d'usage (tableau de bord) */
+.usage-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:16px}
+@media(max-width:560px){.usage-cols{grid-template-columns:1fr}}
+.usage-list{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+.usage-list li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  border-bottom:1px solid var(--line-soft);padding:5px 0;font-size:0.95rem}
+.usage-term{font-family:var(--serif);color:var(--ink)}
+.usage-term.missing{color:var(--henna)}
+.usage-count{font-family:var(--mono);font-size:0.82rem;color:var(--gold);font-variant-numeric:tabular-nums}

@@ -202,6 +202,20 @@ entrée produit **33 triplets** et le lexique complet **275**, avec des prédica
 vers les IRI canoniques de ces vocabulaires. Le tamasheq est étiqueté `tmh` (ISO 639-3),
 sa graphie tifinagh `tmh-Tfng`. Licence **CC BY-SA 4.0**, citation par slug.
 
+### Tableau de bord & usage (§20)
+
+Page publique `/tableau` (« santé de la langue ») : couverture, complétude, communauté,
+et un **indice de couverture documentaire par aire** — explicitement distingué de la
+vitalité réelle du parler, qu'aucun dictionnaire ne mesure.
+
+La section **Usage** repose sur un **compteur de recherches agrégé et anonyme**
+([`src/lib/searchlog.ts`](src/lib/searchlog.ts), §25) : un total par terme normalisé, **sans
+identifiant, sans IP, sans horodatage par événement** — impossible de reconstituer le
+parcours d'une personne. Les **recherches sans résultat** forment une liste de travail
+directe pour la collecte lexicale (« voici ce qu'on cherche et qu'on n'a pas »). Tant
+qu'aucune recherche n'a eu lieu, la section affiche un état vide honnête plutôt que des
+chiffres inventés.
+
 ### Quiz & jeux (§17)
 
 Page publique `/jouer` (aucune connexion requise) : un quiz éclair à choix multiples

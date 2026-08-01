@@ -98,6 +98,24 @@ export async function computeStats() {
     return { code: a.code, country: a.country, documented, coverage, audio, index };
   });
 
+  // ── Usage (analytique anonyme et agrégée, §20/§25) ────────────────────────
+  const [searchAgg, distinctTerms, topTerms, topNoResult] = await Promise.all([
+    db.searchQuery.aggregate({ _sum: { count: true } }),
+    db.searchQuery.count(),
+    db.searchQuery.findMany({ orderBy: [{ count: "desc" }, { lastAt: "desc" }], take: 8 }),
+    db.searchQuery.findMany({
+      where: { lastResults: 0 },
+      orderBy: [{ count: "desc" }, { lastAt: "desc" }],
+      take: 8,
+    }),
+  ]);
+  const usage = {
+    totalSearches: searchAgg._sum.count ?? 0,
+    distinctTerms,
+    topTerms: topTerms.map((r) => ({ term: r.term, count: r.count })),
+    topNoResult: topNoResult.map((r) => ({ term: r.term, count: r.count })),
+  };
+
   return {
     total,
     byPos,
@@ -105,5 +123,6 @@ export async function computeStats() {
     completeness,
     community: { contributors, activeContributors, contributions, medianReviewH },
     vitality,
+    usage,
   };
 }

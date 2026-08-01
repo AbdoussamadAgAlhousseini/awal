@@ -125,9 +125,49 @@ export default async function Dashboard() {
             </table>
           </div>
 
-          {/* ── Usage (honnête) ── */}
+          {/* ── Usage (analytique anonyme et agrégée) ── */}
           <h3 className="sub-h">{d.usage}</h3>
-          <div className="flash warn" dir="auto">{d.usageNote}</div>
+          <p className="muted small" dir="auto">{d.usageIntro}</p>
+
+          {s.usage.totalSearches === 0 ? (
+            <div className="flash warn">{d.noSearches}</div>
+          ) : (
+            <>
+              <div className="stats">
+                <div className="stat"><div className="v">{s.usage.totalSearches}</div><div className="l">{d.totalSearches}</div></div>
+                <div className="stat"><div className="v">{s.usage.distinctTerms}</div><div className="l">{d.distinctTerms}</div></div>
+              </div>
+
+              <div className="usage-cols">
+                <div className="usage-col">
+                  <h4 className="dash-h4">{d.topSearches}</h4>
+                  <ul className="usage-list">
+                    {s.usage.topTerms.map((r) => (
+                      <li key={r.term}>
+                        <span className="usage-term" dir="auto">{r.term}</span>
+                        <span className="usage-count">{r.count}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {s.usage.topNoResult.length > 0 && (
+                  <div className="usage-col">
+                    <h4 className="dash-h4">{d.toAdd}</h4>
+                    <ul className="usage-list">
+                      {s.usage.topNoResult.map((r) => (
+                        <li key={r.term}>
+                          <a href={`/contribuer?kind=new_lexeme`} className="usage-term missing" dir="auto">{r.term}</a>
+                          <span className="usage-count">{r.count}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="muted small" dir="auto">{d.toAddNote}</p>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
 
           <p style={{ marginTop: 24 }}>
             <Link href="/" className="back">← Awal</Link>

@@ -180,6 +180,19 @@ model Card {
   @@index([userId, due])
 }
 
+/// Compteur de recherches AGRÉGÉ et ANONYME (§20, §25).
+/// Aucun identifiant, aucune IP, aucune horodatation par événement : seulement un total
+/// par terme normalisé. Les recherches sans résultat orientent la collecte lexicale.
+model SearchQuery {
+  id          String   @id @default(cuid())
+  term        String   @unique // terme normalisé (minuscule, espaces réduits)
+  count       Int      @default(0)
+  lastResults Int      @default(0) // nb de résultats du dernier passage (0 = à ajouter)
+  lastAt      DateTime @updatedAt
+
+  @@index([count])
+}
+
 /// Journal d'audit : toute écriture métier est historisée et réversible (§21, §25)
 model Revision {
   id        String   @id @default(cuid())

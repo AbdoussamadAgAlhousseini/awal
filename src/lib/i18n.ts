@@ -102,6 +102,8 @@ type Messages = {
     medianReview: string; noReview: string; hours: string;
     vitality: string; vitalityNote: string; documented: string; coverageCol: string; audioCol: string; indexCol: string;
     usage: string; usageNote: string;
+    usageIntro: string; totalSearches: string; distinctTerms: string;
+    topSearches: string; toAdd: string; toAddNote: string; noSearches: string;
   };
   authx: {
     signInWith: string; prototypeTitle: string; prototypeWarn: string;
@@ -229,6 +231,11 @@ export const messages: Record<Locale, Messages> = {
       vitality: "Indice de couverture documentaire par aire", vitalityNote: "Mesure à quel point chaque aire est DOCUMENTÉE sur la plateforme — non la vitalité réelle du parler, qui dépend des locuteurs et de la transmission.", documented: "documentées",
       coverageCol: "Couverture", audioCol: "Audio", indexCol: "Indice",
       usage: "Usage", usageNote: "Recherches, mots consultés, apprenants actifs : non instrumentés. Par respect de la vie privée (§25), rien n'est mesuré tant qu'un dispositif d'analyse anonyme et transparent n'a pas été mis en place. Ces chiffres ne sont pas inventés.",
+      usageIntro: "Compteur agrégé et anonyme : ni identifiant, ni IP, ni horodatage par événement — seulement des totaux par terme.",
+      totalSearches: "recherches", distinctTerms: "termes distincts",
+      topSearches: "Recherches les plus fréquentes", toAdd: "Cherchés, mais absents",
+      toAddNote: "Ces recherches n'ont donné aucun résultat : autant de pistes pour la collecte.",
+      noSearches: "Aucune recherche enregistrée pour l'instant.",
     },
     quiz: {
       title: "Jouer", intro: "Quiz éclair pour réviser le vocabulaire. Contenu à valider.",
@@ -383,6 +390,11 @@ export const messages: Record<Locale, Messages> = {
       vitality: "Documentation coverage index by area", vitalityNote: "Measures how well each area is DOCUMENTED on the platform — not the real vitality of the variety, which depends on speakers and transmission.", documented: "documented",
       coverageCol: "Coverage", audioCol: "Audio", indexCol: "Index",
       usage: "Usage", usageNote: "Searches, viewed words, active learners: not instrumented. Out of privacy respect (§25), nothing is measured until an anonymous, transparent analytics scheme is in place. These figures are not fabricated.",
+      usageIntro: "Aggregate, anonymous counter: no identifier, no IP, no per-event timestamp — only totals per term.",
+      totalSearches: "searches", distinctTerms: "distinct terms",
+      topSearches: "Most frequent searches", toAdd: "Searched, but missing",
+      toAddNote: "These searches returned nothing: each is a lead for collection.",
+      noSearches: "No search recorded yet.",
     },
     quiz: {
       title: "Play", intro: "A quick quiz to review vocabulary. Content to be validated.",
@@ -537,6 +549,11 @@ export const messages: Record<Locale, Messages> = {
       vitality: "مؤشر التغطية التوثيقية حسب المنطقة", vitalityNote: "يقيس مدى توثيق كل منطقة على المنصة — لا الحيوية الفعلية للهجة، التي تعتمد على المتحدثين والنقل بين الأجيال.", documented: "موثّقة",
       coverageCol: "التغطية", audioCol: "صوت", indexCol: "المؤشر",
       usage: "الاستخدام", usageNote: "عمليات البحث والكلمات المُطالَعة والمتعلمون النشطون: غير مُقاسة. احتراماً للخصوصية (§25)، لا يُقاس شيء قبل إرساء نظام تحليل مجهول وشفاف. هذه الأرقام ليست مُختلقة.",
+      usageIntro: "عدّاد إجمالي ومجهول: بلا معرّف ولا IP ولا طابع زمني لكل حدث — مجرّد إجماليات لكل مصطلح.",
+      totalSearches: "عمليات بحث", distinctTerms: "مصطلحات متمايزة",
+      topSearches: "أكثر عمليات البحث تكراراً", toAdd: "مطلوبة لكنها غائبة",
+      toAddNote: "لم تُرجع عمليات البحث هذه أي نتيجة: كل واحدة دليل للجمع.",
+      noSearches: "لا توجد عمليات بحث مسجّلة بعد.",
     },
     quiz: {
       title: "لعب", intro: "اختبار سريع لمراجعة المفردات. المحتوى قيد التحقق.",

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getLocale } from "@/lib/locale";
 import { messages, posLabel, type Locale } from "@/lib/i18n";
 import { searchLexemes } from "@/lib/search";
+import { logSearch } from "@/lib/searchlog";
 import SiteHeader from "@/components/SiteHeader";
 
 export const dynamic = "force-dynamic";
@@ -36,6 +37,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<SP>
   const { hits, approximate } = q.trim()
     ? await searchLexemes(q)
     : { hits: [], approximate: false };
+
+  // Analytique anonyme et agrégée (§20, §25) : compteur par terme, sans identité.
+  if (q.trim()) await logSearch(q, hits.length);
 
   return (
     <>
